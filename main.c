@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <allegro.h>
+#include "Header.h"
 
 #define LONG 800
 #define LARG 600
