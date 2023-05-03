@@ -1,8 +1,5 @@
 #include "Header.h"
 
-#define LONG 800
-#define LARG 600
-
 int main(void) {
     allegro_init();
     install_keyboard();

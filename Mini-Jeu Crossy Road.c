@@ -45,14 +45,14 @@ void crossy_road(){
             touche =readkey();
             scancode =touche>>8;
 
-            if(scancode ==KEY_DOWN){
+            if(scancode ==KEY_DOWN){ //BAS
                 posY1+= 0;}
-            if(scancode ==KEY_UP){
+            if(scancode ==KEY_UP){ //HAUT
                 posY1-= 0;}
-            if(scancode ==KEY_LEFT){
+            if(scancode ==KEY_LEFT){ //GAUCHE
                 posX1-= 0;
                 sens =1;}
-            if(scancode ==KEY_RIGHT){
+            if(scancode ==KEY_RIGHT){ //DROITE
                 posX1+= 0;
                 sens =2;}
         }
