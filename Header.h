@@ -16,7 +16,7 @@
 void tank_trouble();
 void crossy_road();
 
-
+/// ~~~~~~~~~~~~~~ Structure ~~~~~~~~~~~~~~
 
 
 #endif //PROJET_HEADER_H
