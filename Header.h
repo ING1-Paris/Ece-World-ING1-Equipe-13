@@ -7,6 +7,7 @@
 /// ~~~~~~~~~~~~~~ Define ~~~~~~~~~~~~~~
 #define LONG 800
 #define LARG 600
+#define NB_JOUEUR 2
 
 /// ~~~~~~~~~~~~~~ Bibliothèques ~~~~~~~~~~~~~~
 #include <stdio.h>
@@ -17,6 +18,14 @@ void tank_trouble();
 void crossy_road();
 
 /// ~~~~~~~~~~~~~~ Structure ~~~~~~~~~~~~~~
+typedef struct{
+    int tickets;
+    char nom[50];
+
+    int performance_Canards;
+    int performance_ParisHippiques;
+    int performance_CrossyRoad;
+}joueur;
 
 
 #endif //PROJET_HEADER_H

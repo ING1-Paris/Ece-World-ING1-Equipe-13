@@ -12,7 +12,7 @@ void crossy_road(){
     BITMAP *herbe1;
     BITMAP *herbe2;
     BITMAP *route;
-    BITMAP *coin_sheet;
+    BITMAP *pieces[6];
 
     ///load_bitmap();
     tronc =load_bitmap("CR_Tronc.bmp",NULL);
@@ -40,7 +40,7 @@ void crossy_road(){
         allegro_message("pas pu trouver CR_Riviere.bmp");
         exit(EXIT_FAILURE);}
 
-    coin_sheet =load_bitmap("CR_Pieces.bmp", NULL);
+    //pieces =load_bitmap("CR_Pieces.bmp", NULL);
 
     /// ############### VARIABLES
     int troncX1, troncY1, troncX2, troncY2; //La position des troncs

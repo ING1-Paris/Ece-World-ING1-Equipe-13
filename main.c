@@ -9,6 +9,7 @@ int main(void) {
         allegro_exit();
         exit(EXIT_FAILURE);}
 
+
     /* Menu → Permet de sélectionner son pseudo et son joueur, le tout est stocké dans une structure Joueur
      * Le menu lance ensuite la Map principale, cette map doit afficher le numéro du joueur en cours et son
      * nombre de tickets (rappel à 0 fin de partie) elle lance aussi les mini-jeux → chaque mini jeu est
@@ -19,6 +20,7 @@ int main(void) {
      * Enfin il faut s'occuper de la victoire et quitter allegro (ça vide la mémoire automatiquement). */
 
     //menu();
+    //À mettre dans le menu : joueur Joueur[NB_JOUEUR]; //Création de la structure joueur
 
     allegro_exit();
     return 0;
