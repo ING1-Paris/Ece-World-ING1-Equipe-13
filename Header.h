@@ -18,14 +18,14 @@ void tank_trouble();
 void crossy_road();
 
 /// ~~~~~~~~~~~~~~ Structure ~~~~~~~~~~~~~~
-typedef struct{
+/*typedef struct{
     int tickets;
     char nom[50];
 
     int performance_Canards;
     int performance_ParisHippiques;
     int performance_CrossyRoad;
-}joueur;
+}joueur;*/
 
 
 #endif //PROJET_HEADER_H

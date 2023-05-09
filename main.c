@@ -1,6 +1,7 @@
 #include "Header.h"
 
 typedef struct Joueur{
+    char nom[100];
     int x;
     int y;
     int tickets;
