@@ -5,31 +5,42 @@
 
 void crossy_road(){
     /// ############### BITMAPS
-    BITMAP *poulet_rouge; //Joueur 1
-    BITMAP *poulet_bleu; //Joueur 2
+    //BITMAP chat1[];
+    //BITMAP chat2[];
     BITMAP *tronc;
-    BITMAP *fond;
+    BITMAP *riviere;
+    BITMAP *herbe1;
+    BITMAP *herbe2;
+    BITMAP *route;
+    BITMAP *pieces[6];
 
     ///load_bitmap();
-    poulet_rouge =load_bitmap("poulet_rouge.bmp",NULL);
-    if (!poulet_rouge){
-        allegro_message("pas pu trouver poulet.bmp");
-        exit(EXIT_FAILURE);}
-
-    poulet_bleu =load_bitmap("poulet_bleu.bmp",NULL);
-    if (!poulet_bleu){
-        allegro_message("pas pu trouver poulet_bleu.bmp");
-        exit(EXIT_FAILURE);}
-
-    tronc =load_bitmap("tronc.bmp",NULL);
+    tronc =load_bitmap("CR_Tronc.bmp",NULL);
     if (!tronc){
         allegro_message("pas pu trouver tronc.bmp");
         exit(EXIT_FAILURE);}
 
-    fond =load_bitmap("fond.bmp",NULL);
-    if (!fond){
-        allegro_message("pas pu trouver fond.bmp");
+    riviere =load_bitmap("CR_Riviere.bmp",NULL);
+    if (!riviere){
+        allegro_message("pas pu trouver CR_Riviere.bmp");
         exit(EXIT_FAILURE);}
+
+    herbe1 =load_bitmap("CR_Herbe1.bmp",NULL);
+    if (!herbe1){
+        allegro_message("pas pu trouver CR_Riviere.bmp");
+        exit(EXIT_FAILURE);}
+
+    herbe2 =load_bitmap("CR_Herbe2.bmp",NULL);
+    if (!herbe2){
+        allegro_message("pas pu trouver CR_Riviere.bmp");
+        exit(EXIT_FAILURE);}
+
+    route =load_bitmap("CR_Route.bmp",NULL);
+    if (!route){
+        allegro_message("pas pu trouver CR_Riviere.bmp");
+        exit(EXIT_FAILURE);}
+
+    //pieces =load_bitmap("CR_Pieces.bmp", NULL);
 
     /// ############### VARIABLES
     int troncX1, troncY1, troncX2, troncY2; //La position des troncs
