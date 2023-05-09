@@ -14,6 +14,10 @@ void crossy_road(){
     BITMAP *route;
     BITMAP *pieces[6];
 
+    BITMAP *buffer; //Double buffer
+    buffer =create_bitmap(LONG,LARG);
+    clear_bitmap(buffer);
+
     ///load_bitmap();
     tronc =load_bitmap("CR_Tronc.bmp",NULL);
     if (!tronc){
@@ -67,5 +71,15 @@ void crossy_road(){
                 posX1+= 0;
                 sens =2;}
         }
+
+        ///GRILLE
+        for(int i=0; i <24; i++){
+            vline(buffer, i*50, 0, LARG, makecol(0,0,0));
+        }
+        for(int i=0; i <13; i++){
+            hline(buffer, 0, i*50, LONG, makecol(0,0,0));
+        }
+
+        blit(buffer,screen,0,0,0,0,LONG,LARG);
     }
 }

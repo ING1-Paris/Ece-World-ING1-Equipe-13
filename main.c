@@ -1,12 +1,31 @@
 #include "Header.h"
 
-typedef struct Joueur{
-    char nom[100];
-    int x;
-    int y;
-    int tickets;
-    BITMAP* sprite;
-}joueur;
+int main(void) {
+    allegro_init();
+    install_keyboard();
+    set_color_depth(desktop_color_depth());
+    if((set_gfx_mode(GFX_AUTODETECT_WINDOWED,(LONG),(LARG),0,0))!=0){
+        allegro_message("Pb de mode graphique");
+        allegro_exit();
+        exit(EXIT_FAILURE);}
+
+    /* Menu → Permet de sélectionner son pseudo et son joueur, le tout est stocké dans une structure Joueur
+     * Le menu lance ensuite la Map principale, cette map doit afficher le numéro du joueur en cours et son
+     * nombre de tickets (rappel à 0 fin de partie) elle lance aussi les mini-jeux → chaque mini jeu est
+     * un sous programme indépendant (appelle les Bitmaps au début et les libère à la fin) → prend en
+     * paramètres la structure joueur pour les tickets
+     * La Map principale doit bien gérer la sortie du sous programme de mini jeu avec le passage au joueur
+     * suivant.
+     * Enfin il faut s'occuper de la victoire et quitter allegro (ça vide la mémoire automatiquement). */
+
+    //menu();
+    joueur tabJoueur[2];
+    choixJoueurs(tabJoueur);
+    allegro_exit();
+    return 0;
+}
+END_OF_MAIN()
+
 
 int choixJoueurs(joueur *tabJoueur){
     BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
@@ -94,29 +113,3 @@ int choixJoueurs(joueur *tabJoueur){
             clear(buffer);
         }
 }
-
-int main(void) {
-    allegro_init();
-    install_keyboard();
-    set_color_depth(desktop_color_depth());
-    if((set_gfx_mode(GFX_AUTODETECT_WINDOWED,(LONG),(LARG),0,0))!=0){
-        allegro_message("Pb de mode graphique");
-        allegro_exit();
-        exit(EXIT_FAILURE);}
-
-    /* Menu → Permet de sélectionner son pseudo et son joueur, le tout est stocké dans une structure Joueur
-     * Le menu lance ensuite la Map principale, cette map doit afficher le numéro du joueur en cours et son
-     * nombre de tickets (rappel à 0 fin de partie) elle lance aussi les mini-jeux → chaque mini jeu est
-     * un sous programme indépendant (appelle les Bitmaps au début et les libère à la fin) → prend en
-     * paramètres la structure joueur pour les tickets
-     * La Map principale doit bien gérer la sortie du sous programme de mini jeu avec le passage au joueur
-     * suivant.
-     * Enfin il faut s'occuper de la victoire et quitter allegro (ça vide la mémoire automatiquement). */
-
-    //menu();
-    joueur *tabJoueur[2];
-    choixJoueurs(tabJoueur);
-    allegro_exit();
-    return 0;
-}
-END_OF_MAIN()
