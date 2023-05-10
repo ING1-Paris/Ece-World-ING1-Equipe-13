@@ -1,6 +1,8 @@
 #include "Header.h"
 
 int main(void) {
+    srand(time(NULL));
+
     allegro_init();
     install_keyboard();
     install_mouse();
@@ -20,6 +22,8 @@ int main(void) {
      * Enfin il faut s'occuper de la victoire et quitter allegro (ça vide la mémoire automatiquement). */
 
     //menu();
+    crossy_road();
+
     joueur tabJoueur[2];
     choixJoueurs(tabJoueur);
     allegro_exit();
