@@ -23,6 +23,8 @@ int main(void) {
 
     //menu();
     crossy_road();
+    allegro_exit();
+    return 0;
 
     joueur tabJoueur[2];
     choixJoueurs(tabJoueur);

@@ -20,9 +20,7 @@
     int tickets;
     char nom[50];
 
-    int performance_Canards;
-    int performance_ParisHippiques;
-    int performance_CrossyRoad;
+
 }joueur;*/
 
 typedef struct {
@@ -30,6 +28,10 @@ typedef struct {
     int y;
     int tickets;
     BITMAP* sprite;
+
+    int performance_Canards;
+    int performance_TirAuxBallons;
+    int performance_CrossyRoad;
 }joueur;
 
 
