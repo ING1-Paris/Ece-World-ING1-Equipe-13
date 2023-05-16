@@ -37,8 +37,11 @@ typedef struct {
 
 /// ~~~~~~~~~~~~~~ Prototypes ~~~~~~~~~~~~~~
 int choixJoueurs(joueur *tabJoueur);
+
 void tank_trouble();
+
 void crossy_road();
+    void finPartie();
 
 
 
