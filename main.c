@@ -4,13 +4,16 @@ int main(void) {
     srand(time(NULL));
 
     allegro_init();
+    install_mouse();
     install_keyboard();
     install_mouse();
     set_color_depth(desktop_color_depth());
-    if((set_gfx_mode(GFX_AUTODETECT_WINDOWED,(LONG),(LARG),0,0))!=0){
+    install_sound(DIGI_AUTODETECT, MIDI_AUTODETECT, NULL);
+    if ((set_gfx_mode(GFX_AUTODETECT_WINDOWED, (LONG), (LARG), 0, 0)) != 0) {
         allegro_message("Pb de mode graphique");
         allegro_exit();
-        exit(EXIT_FAILURE);}
+        exit(EXIT_FAILURE);
+    }
 
     /* Menu → Permet de sélectionner son pseudo et son joueur, le tout est stocké dans une structure Joueur
      * Le menu lance ensuite la Map principale, cette map doit afficher le numéro du joueur en cours et son
@@ -22,35 +25,41 @@ int main(void) {
      * Enfin il faut s'occuper de la victoire et quitter allegro (ça vide la mémoire automatiquement). */
 
     //menu();
-    crossy_road();
 
-    joueur tabJoueur[2];
+    joueur *tabJoueur[2];
     choixJoueurs(tabJoueur);
+    //crossy_road();
+    jeu_canards();
     allegro_exit();
     return 0;
 }
+
 END_OF_MAIN()
 
 
-int choixJoueurs(joueur *tabJoueur){
-    BITMAP *buffer= create_bitmap(SCREEN_W,SCREEN_H);
-    BITMAP *sprite1= load_bitmap("bonhomme.bmp",NULL);
-    BITMAP *maisonCanard= load_bitmap("maisonCanard.bmp",NULL);
-    if (!sprite1){
+int choixJoueurs(joueur *tabJoueur) {
+    BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
+    BITMAP *sprite1 = load_bitmap("bonhomme.bmp", NULL);
+    BITMAP *maisonCanard = load_bitmap("maisonCanard.bmp", NULL);
+    BITMAP  *CrossyRoad= load_bitmap("MaisonRoad.bmp",NULL);
+    BITMAP *arche= load_bitmap("Arche.bmp",NULL);
+    if (!sprite1) {
         allegro_message("pas pu trouver sprite1.bmp");
-        exit(EXIT_FAILURE);}
-    BITMAP *sprite2= load_bitmap("bonhomme2.bmp",NULL);
-    if (!sprite2){
+        exit(EXIT_FAILURE);
+    }
+    BITMAP *sprite2 = load_bitmap("bonhomme2.bmp", NULL);
+    if (!sprite2) {
         allegro_message("pas pu trouver sprite2.bmp");
-        exit(EXIT_FAILURE);}
-    int i=0;
-    while(!key[KEY_ESC]){
+        exit(EXIT_FAILURE);
+    }
+    int i = 0;
+    while (!key[KEY_ESC]) {
         show_mouse(buffer);
-        while (i<2) {
-            tabJoueur[0].x=0;
-            tabJoueur[0].y=0;
-            tabJoueur[1].x=35;
-            tabJoueur[1].y=0;
+        while (i < 2) {
+            tabJoueur[0].x = 0;
+            tabJoueur[0].y = 0;
+            tabJoueur[1].x = 35;
+            tabJoueur[1].y = 0;
             show_mouse(buffer);
             textprintf_ex(buffer, font, 340, 50, makecol(255, 255, 255), 0, "CHOIX PERSONNAGE");
             if (mouse_x >= SCREEN_W / 4 - 75 && mouse_x <= SCREEN_W / 4 - 75 + 150 && mouse_y >= SCREEN_H / 4 &&
@@ -74,47 +83,55 @@ int choixJoueurs(joueur *tabJoueur){
             } else {
                 stretch_sprite(buffer, sprite1, SCREEN_W / 4 - 75, SCREEN_H / 4, 150, 200);
                 stretch_sprite(buffer, sprite2, SCREEN_W * 6 / 8 - 75, SCREEN_H / 4, 150, 200);
+
             }
-            blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
+            blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
             clear(buffer);
         }
-        stretch_sprite(buffer,maisonCanard,260,34,100,100);
-        rectfill(buffer,300,90,320,114,makecol(0,0,0));
-        stretch_sprite(buffer,tabJoueur[0].sprite,tabJoueur[0].x,tabJoueur[0].y,30,40);
-        stretch_sprite(buffer,tabJoueur[1].sprite,tabJoueur[1].x,tabJoueur[1].y,30,40);
-        if(key[KEY_UP]&& tabJoueur[1].y>0){
-            tabJoueur[1].y=tabJoueur[1].y-10;
+        stretch_sprite(buffer, maisonCanard, 260, 34, 100, 100);
+        stretch_sprite(buffer, CrossyRoad, 100, 159, 150, 150);
+        //porte des canards
+        rectfill(buffer, 300, 90, 330, 130, makecol(155, 0, 250));
+        stretch_sprite(buffer, tabJoueur[0].sprite, tabJoueur[0].x, tabJoueur[0].y, 30, 40);
+        stretch_sprite(buffer, tabJoueur[1].sprite, tabJoueur[1].x, tabJoueur[1].y, 30, 40);
+        stretch_sprite(buffer, arche, 260, 300, 200, 200);
+        if (key[KEY_UP] && tabJoueur[1].y > 0) {
+            tabJoueur[1].y = tabJoueur[1].y - 10;
             rest(50);
         }
-        if (key[KEY_DOWN]&&tabJoueur[1].y<SCREEN_H-40){
-            tabJoueur[1].y=tabJoueur[1].y+10;
+        if (key[KEY_DOWN] && tabJoueur[1].y < SCREEN_H - 40) {
+            tabJoueur[1].y = tabJoueur[1].y + 10;
             rest(50);
         }
-        if(key[KEY_LEFT]&& tabJoueur[1].x>0){
-            tabJoueur[1].x=tabJoueur[1].x-10;
+        if (key[KEY_LEFT] && tabJoueur[1].x > 0) {
+            tabJoueur[1].x = tabJoueur[1].x - 10;
             rest(50);
         }
-        if (key[KEY_RIGHT]&&tabJoueur[1].x<SCREEN_W-30){
-            tabJoueur[1].x=tabJoueur[1].x+10;
+        if (key[KEY_RIGHT] && tabJoueur[1].x < SCREEN_W - 30) {
+            tabJoueur[1].x = tabJoueur[1].x + 10;
             rest(50);
         }
-        if(key[KEY_W]&& tabJoueur[0].y>=0){
-            tabJoueur[0].y=tabJoueur[0].y-10;
+        if (key[KEY_W] && tabJoueur[0].y >= 0) {
+            tabJoueur[0].y = tabJoueur[0].y - 10;
             rest(50);
         }
-        if (key[KEY_S]&&tabJoueur[0].y<SCREEN_H-40){
-            tabJoueur[0].y=tabJoueur[0].y+10;
+        if (key[KEY_S] && tabJoueur[0].y < SCREEN_H - 40) {
+            tabJoueur[0].y = tabJoueur[0].y + 10;
             rest(50);
         }
-        if(key[KEY_A]&& tabJoueur[0].x>=0){
-            tabJoueur[0].x=tabJoueur[0].x-10;
+        if (key[KEY_A] && tabJoueur[0].x >= 0) {
+            tabJoueur[0].x = tabJoueur[0].x - 10;
             rest(50);
         }
-        if (key[KEY_D]&&tabJoueur[0].x<SCREEN_W-30){
-            tabJoueur[0].x=tabJoueur[0].x+10;
+        if (key[KEY_D] && tabJoueur[0].x < SCREEN_W - 30) {
+            tabJoueur[0].x = tabJoueur[0].x + 10;
             rest(50);
         }
-            blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
-            clear(buffer);
+        if(tabJoueur[0].x>=300 &&tabJoueur[0].x<=330 && tabJoueur[0].y>=90 &&tabJoueur[0].y<=130 ){
+            jeu_canards();
+            crossy_road();
         }
+        blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+        clear(buffer);
+    }
 }

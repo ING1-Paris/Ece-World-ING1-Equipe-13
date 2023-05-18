@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include <allegro.h>
 #include <time.h>
+#include <stdlib.h>
+#include <math.h>
 
 /// ~~~~~~~~~~~~~~ Structure ~~~~~~~~~~~~~~
 /*typedef struct{
@@ -23,7 +25,7 @@
 
 }joueur;*/
 
-typedef struct {
+typedef struct Joueur {
     int x;
     int y;
     int tickets;
@@ -43,7 +45,7 @@ void tank_trouble();
 void crossy_road();
     void finPartie();
 
-
+void jeu_canards();
 
 
 
