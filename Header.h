@@ -59,7 +59,8 @@ void crossy_road();
 
 void initialisationAllegro();
 int collide_point_cercle(int point_x, int point_y, int cercle_x, int cercle_y, int rayon);
-int partie(BITMAP *buffer, Joueur joueur1, Joueur joueur2,int joueur);
+int partie(BITMAP *buffer, long *tempsJoueur1, long *tempsJoueur2,int joueur);
+int determinerGagnant(long tempsJoueur1, long tempsJoueur2);
 
 
 
