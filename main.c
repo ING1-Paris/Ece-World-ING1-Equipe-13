@@ -35,12 +35,9 @@ int main(void) {
 
 END_OF_MAIN()
 
-void nomJoueur(char *name, BITMAP* buffer)
+void nomJoueur(char *name, BITMAP* buffer,int i)
 {
-    clear(buffer);
-
-    textout_centre_ex(buffer, font, "Enter your name:", LARG / 2, LONG / 2 - text_height(font), makecol(255, 255, 255),255);
-
+    textprintf_ex(buffer, font, LARG / 2, LONG / 2 - text_height(font), makecol(255, 255, 255), 0, "Entrez le nom du joueur %d",i);
     int pos = 0;
     while (!key[KEY_ENTER])
     {
@@ -58,9 +55,8 @@ void nomJoueur(char *name, BITMAP* buffer)
             }
         }
 
-        clear(buffer);
-        textout_centre_ex(buffer, font, "Enter your name:", LARG / 2, LONG / 2 - text_height(font), makecol(255, 255, 255),255);
-        textout_centre_ex(buffer, font, name, LARG / 2, LONG / 2 + text_height(font), makecol(255, 255, 255),255);
+        textprintf_ex(buffer, font, LARG / 2, LONG / 2 - text_height(font), makecol(255, 255, 255), 0, "Entrez le nom du joueur %d",i);
+        textprintf_ex(buffer, font, LARG / 2, LONG / 2 + text_height(font), makecol(255, 255, 255), 0, "%s",name);
 
         blit(buffer, screen, 0, 0, 0, 0, LARG, LONG);
 
@@ -100,7 +96,7 @@ int menu_map(joueur *tabJoueur) {
                 stretch_sprite(buffer, sprite2, SCREEN_W * 6 / 8 - 75, SCREEN_H / 4, 150, 200);
                 if (mouse_b == 1) {
                     tabJoueur[i].sprite = sprite1;
-                    nomJoueur(tabJoueur[i].name,buffer);
+                    nomJoueur(tabJoueur[i].name,buffer,i);
                     rest(500);
                     i++;
                 }
@@ -110,7 +106,7 @@ int menu_map(joueur *tabJoueur) {
                 stretch_sprite(buffer, sprite1, SCREEN_W / 4 - 75, SCREEN_H / 4, 150, 200);
                 if (mouse_b == 1) {
                     tabJoueur[i].sprite = sprite2;
-                    nomJoueur(tabJoueur[i].name,buffer);
+                    nomJoueur(tabJoueur[i].name,buffer,i);
                     rest(500);
                     i++;
 
