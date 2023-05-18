@@ -27,17 +27,49 @@ int main(void) {
     //menu();
 
     joueur *tabJoueur[2];
-    choixJoueurs(tabJoueur);
+    menu_map(tabJoueur);
     //crossy_road();
-    jeu_canards();
     allegro_exit();
     return 0;
 }
 
 END_OF_MAIN()
 
+void nomJoueur(char *name, BITMAP* buffer)
+{
+    clear(buffer);
 
-int choixJoueurs(joueur *tabJoueur) {
+    textout_centre_ex(buffer, font, "Enter your name:", LARG / 2, LONG / 2 - text_height(font), makecol(255, 255, 255),255);
+
+    int pos = 0;
+    while (!key[KEY_ENTER])
+    {
+        if (keypressed())
+        {
+            int key = readkey() & 0xFF;
+            if (key == '\b' && pos > 0)
+            {
+                name[--pos] = '\0';
+            }
+            else if (key >= ' ' && key <= '~' && pos < 255)
+            {
+                name[pos++] = key;
+                name[pos] = '\0';
+            }
+        }
+
+        clear(buffer);
+        textout_centre_ex(buffer, font, "Enter your name:", LARG / 2, LONG / 2 - text_height(font), makecol(255, 255, 255),255);
+        textout_centre_ex(buffer, font, name, LARG / 2, LONG / 2 + text_height(font), makecol(255, 255, 255),255);
+
+        blit(buffer, screen, 0, 0, 0, 0, LARG, LONG);
+
+        rest(10);
+    
+    }
+}
+
+int menu_map(joueur *tabJoueur) {
     BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
     BITMAP *sprite1 = load_bitmap("bonhomme.bmp", NULL);
     BITMAP *maisonCanard = load_bitmap("maisonCanard.bmp", NULL);
@@ -68,6 +100,7 @@ int choixJoueurs(joueur *tabJoueur) {
                 stretch_sprite(buffer, sprite2, SCREEN_W * 6 / 8 - 75, SCREEN_H / 4, 150, 200);
                 if (mouse_b == 1) {
                     tabJoueur[i].sprite = sprite1;
+                    nomJoueur(tabJoueur[i].name,buffer);
                     rest(500);
                     i++;
                 }
@@ -77,8 +110,10 @@ int choixJoueurs(joueur *tabJoueur) {
                 stretch_sprite(buffer, sprite1, SCREEN_W / 4 - 75, SCREEN_H / 4, 150, 200);
                 if (mouse_b == 1) {
                     tabJoueur[i].sprite = sprite2;
+                    nomJoueur(tabJoueur[i].name,buffer);
                     rest(500);
                     i++;
+
                 }
             } else {
                 stretch_sprite(buffer, sprite1, SCREEN_W / 4 - 75, SCREEN_H / 4, 150, 200);

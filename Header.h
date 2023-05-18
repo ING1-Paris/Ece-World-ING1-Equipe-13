@@ -29,6 +29,7 @@ typedef struct Joueur {
     int x;
     int y;
     int tickets;
+    char name[30];
     BITMAP* sprite;
 
     int performance_Canards;
@@ -38,7 +39,7 @@ typedef struct Joueur {
 
 
 /// ~~~~~~~~~~~~~~ Prototypes ~~~~~~~~~~~~~~
-int choixJoueurs(joueur *tabJoueur);
+int menu_map(joueur *tabJoueur);
 
 void tank_trouble();
 

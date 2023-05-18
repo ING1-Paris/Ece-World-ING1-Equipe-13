@@ -144,9 +144,12 @@ int partie(BITMAP *buffer){
     return compteur;
 }
 void jeu(BITMAP *buffer){
+    //Le premier joueur commence à jouer et on stocke son score
     int score1=partie(buffer);
-    //clear(screen);
+    clear(screen);
     textprintf_ex(screen,font,0,0, makecol(255,255,0), makecol(255,0,255),"%d", score1);
+    rest(4000);
+
     int score2= partie(buffer);
     clear(screen);
     textprintf_ex(screen,font,0,0, makecol(255,255,0), makecol(255,0,255),"%d", score2);
