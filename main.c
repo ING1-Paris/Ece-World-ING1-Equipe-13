@@ -67,6 +67,7 @@ void nomJoueur(char *name, BITMAP* buffer,int i)
 
 int menu_map(joueur *tabJoueur) {
     int memory=0;
+    int crossyRoad=0;
     int peche=0;
     BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
     BITMAP *sprite1 = load_bitmap("bonhomme.bmp", NULL);
@@ -127,6 +128,9 @@ int menu_map(joueur *tabJoueur) {
         rectfill(buffer, 400, 190, 430, 230, makecol(155, 0, 250));
         //porte des canards
         rectfill(buffer, 300, 90, 330, 130, makecol(155, 0, 250));
+        //porte crossy road
+        rectfill(buffer, 500, 290, 530, 330, makecol(155, 0, 250));
+
         stretch_sprite(buffer, tabJoueur[0].sprite, tabJoueur[0].x, tabJoueur[0].y, 30, 40);
         stretch_sprite(buffer, tabJoueur[1].sprite, tabJoueur[1].x, tabJoueur[1].y, 30, 40);
         stretch_sprite(buffer, arche, 260, 300, 200, 200);
@@ -171,7 +175,11 @@ int menu_map(joueur *tabJoueur) {
             rest(100);
             jeuMemory();
             memory=1;
-
+        }
+        if(tabJoueur[0].x>=500 &&tabJoueur[0].x<=530 && tabJoueur[0].y>=290 &&tabJoueur[0].y<=330 && crossyRoad==0){
+            rest(100);
+            crossy_road();
+            crossyRoad=1;
         }
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(buffer);
