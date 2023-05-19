@@ -5,8 +5,8 @@
 #define PROJET_HEADER_H
 
 /// ~~~~~~~~~~~~~~ Define ~~~~~~~~~~~~~~
-#define LONG 800
-#define LARG 600
+#define LONG 1200
+#define LARG 650
 #define NB_JOUEUR 2
 
 #define MAX_IMAGES_BALLONS 6
@@ -17,23 +17,26 @@
 #include <allegro.h>
 #include <time.h>
 #include <stdlib.h>
-
+#include <math.h>
 
 /// ~~~~~~~~~~~~~~ Structure ~~~~~~~~~~~~~~
 /*typedef struct{
     int tickets;
     char nom[50];
 
-    int performance_Canards;
-    int performance_ParisHippiques;
-    int performance_CrossyRoad;
+
 }joueur;*/
 
-typedef struct {
+typedef struct Joueur {
     int x;
     int y;
     int tickets;
+    char name[30];
     BITMAP* sprite;
+
+    int performance_Canards;
+    int performance_TirAuxBallons;
+    int performance_CrossyRoad;
 }joueur;
 
 typedef struct {
@@ -52,15 +55,23 @@ typedef struct joueur{
 }Joueur;
 
 /// ~~~~~~~~~~~~~~ Prototypes ~~~~~~~~~~~~~~
-int choixJoueurs(joueur *tabJoueur);
-void tank_trouble();
-void crossy_road();
+int menu_map(joueur *tabJoueur);
 
+void tank_trouble();
+
+void crossy_road();
+void finPartie();
+
+void jeu_canards();
 
 void initialisationAllegro();
 int collide_point_cercle(int point_x, int point_y, int cercle_x, int cercle_y, int rayon);
 int partie(BITMAP *buffer, long *tempsJoueur1, long *tempsJoueur2,int joueur);
 int determinerGagnant(long tempsJoueur1, long tempsJoueur2);
+
+
+int jeuMemory();
+
 
 
 
