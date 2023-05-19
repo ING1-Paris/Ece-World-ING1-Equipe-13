@@ -48,6 +48,7 @@ void crossy_road();
 
 void jeu_canards();
 
+int jeuMemory();
 
 
 #endif //PROJET_HEADER_H

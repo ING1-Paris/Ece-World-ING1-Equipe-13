@@ -10,8 +10,8 @@ typedef struct canard {
     int attrape;
 } t_canard;
 
-t_canard tabCanard[10];
-void melangeCanards(int i) {
+void melangeCanards(int i, t_canard tabCanard[10]
+) {
     tabCanard[i].attrape = 0;
     tabCanard[i].x = (rand() % 900) + 150;
     tabCanard[i].y = (rand() % 550) + 50;
@@ -59,13 +59,13 @@ void affichePanier(int compteur, BITMAP *buffer){
     textprintf(buffer,font,52,410, makecol(255,255,255),"%d",compteur);
 }
 
-int partie(BITMAP *buffer){
+int partie(BITMAP *buffer, t_canard tabCanard[10]){
 
     int done = 0;
     int canne = 0;
     int index_canard = -1; // index du canard attrapé
     for (int i=0;i<10;i++){
-        melangeCanards(i);
+        melangeCanards(i ,tabCanard);
     }
     int start=clock();
     int compteur=0;
@@ -123,11 +123,11 @@ int partie(BITMAP *buffer){
                 }
                 else if(mouse_x>=0&&mouse_x<=100&&mouse_y>=350&&mouse_y<=450){
                     play_sample(win,255, 128, 1000, 0);
-                    melangeCanards(index_canard);
+                    melangeCanards(index_canard,tabCanard);
                     compteur=compteur+1;
                 }
                 else{
-                    melangeCanards(index_canard);
+                    melangeCanards(index_canard, tabCanard);
                     play_sample(fall,255, 128, 1000, 0);
                 }
                 tabCanard[index_canard].attrape = 0;
@@ -143,14 +143,17 @@ int partie(BITMAP *buffer){
     }
     return compteur;
 }
-void jeu(BITMAP *buffer){
+void jeu(BITMAP *buffer, joueur *tabJoueurs){
+    t_canard tabCanard[10];
     //Le premier joueur commence à jouer et on stocke son score
-    int score1=partie(buffer);
+    int score1=partie(buffer,tabCanard);
     clear(screen);
-    textprintf_ex(screen,font,0,0, makecol(255,255,0), makecol(255,0,255),"%d", score1);
-    rest(4000);
+    while(!key[KEY_SPACE]){
+        textprintf_ex(screen,font,0,0, makecol(255,255,0), makecol(255,0,255),"%s a réalisé un score de %d\n "
+                                                                              "C'est au tour de %s, cliquez sur espace pour commencer votre partie", tabJoueurs[0].name, score1, tabJoueurs[1].name);
 
-    int score2= partie(buffer);
+    }
+    int score2= partie(buffer,tabCanard);
     clear(screen);
     textprintf_ex(screen,font,0,0, makecol(255,255,0), makecol(255,0,255),"%d", score2);
     rest(2000);
@@ -181,7 +184,7 @@ void regles(BITMAP *buffer){
     rest(800);
 }
 
-void menu(BITMAP *buffer){
+void menu(BITMAP *buffer,joueur *tabJoueurs){
     BITMAP  *imageMenu= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Menu.bmp",NULL);
     BITMAP * bulles =load_sample("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\bulles.wav");
     while(!key[KEY_ESC]){
@@ -189,7 +192,7 @@ void menu(BITMAP *buffer){
         if(mouse_x>=530 && mouse_x<=710 && mouse_y>=300 && mouse_y<=375 && mouse_b==1){
             play_sample(bulles,255,100,1000,0);
             rest(1000);
-            jeu(buffer);
+            jeu(buffer, tabJoueurs);
             break;
         }
         if(mouse_x>=530 && mouse_x<=710 && mouse_y>=390 && mouse_y<=450 && mouse_b==1){
@@ -202,8 +205,8 @@ void menu(BITMAP *buffer){
         clear(buffer);
     }
 }
-void jeu_canards() {
-    BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
-    menu(buffer);
+void jeu_canards(BITMAP *buffer,joueur *tabJoueurs) {
+    //BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
+    menu(buffer,tabJoueurs);
 }
 

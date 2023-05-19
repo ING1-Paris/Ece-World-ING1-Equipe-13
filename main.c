@@ -26,7 +26,7 @@ int main(void) {
 
     //menu();
 
-    joueur *tabJoueur[2];
+    joueur tabJoueur[2];
     menu_map(tabJoueur);
     //crossy_road();
     allegro_exit();
@@ -66,6 +66,8 @@ void nomJoueur(char *name, BITMAP* buffer,int i)
 }
 
 int menu_map(joueur *tabJoueur) {
+    int memory=0;
+    int peche=0;
     BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
     BITMAP *sprite1 = load_bitmap("bonhomme.bmp", NULL);
     BITMAP *maisonCanard = load_bitmap("maisonCanard.bmp", NULL);
@@ -121,6 +123,8 @@ int menu_map(joueur *tabJoueur) {
         }
         stretch_sprite(buffer, maisonCanard, 260, 34, 100, 100);
         stretch_sprite(buffer, CrossyRoad, 100, 159, 150, 150);
+        //porte memory
+        rectfill(buffer, 400, 190, 430, 230, makecol(155, 0, 250));
         //porte des canards
         rectfill(buffer, 300, 90, 330, 130, makecol(155, 0, 250));
         stretch_sprite(buffer, tabJoueur[0].sprite, tabJoueur[0].x, tabJoueur[0].y, 30, 40);
@@ -158,9 +162,16 @@ int menu_map(joueur *tabJoueur) {
             tabJoueur[0].x = tabJoueur[0].x + 10;
             rest(50);
         }
-        if(tabJoueur[0].x>=300 &&tabJoueur[0].x<=330 && tabJoueur[0].y>=90 &&tabJoueur[0].y<=130 ){
-            jeu_canards();
-            crossy_road();
+        if(tabJoueur[0].x>=300 &&tabJoueur[0].x<=330 && tabJoueur[0].y>=90 &&tabJoueur[0].y<=130 && peche==0 ){
+            rest(100);
+            jeu_canards(buffer,tabJoueur);
+            peche=1;
+        }
+        if(tabJoueur[0].x>=400 &&tabJoueur[0].x<=430 && tabJoueur[0].y>=190 &&tabJoueur[0].y<=230 && memory==0){
+            rest(100);
+            jeuMemory();
+            memory=1;
+
         }
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(buffer);
