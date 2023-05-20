@@ -22,14 +22,14 @@ void melangeCanards(int i, t_canard tabCanard[10]
 
 void affichePanier(int compteur, BITMAP *buffer){
     BITMAP *paniers[8];
-    paniers[0]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Panier.bmp",NULL);
-    paniers[1]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Panier1.bmp",NULL);
-    paniers[2]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Panier2.bmp",NULL);
-    paniers[3]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Panier3.bmp",NULL);
-    paniers[4]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Panier4.bmp",NULL);
-    paniers[5]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Panier5.bmp",NULL);
-    paniers[6]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Panier6.bmp",NULL);
-    paniers[7]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Panier7.bmp",NULL);
+    paniers[0]= load_bitmap("Panier.bmp",NULL);
+    paniers[1]= load_bitmap("Panier1.bmp",NULL);
+    paniers[2]= load_bitmap("Panier2.bmp",NULL);
+    paniers[3]= load_bitmap("Panier3.bmp",NULL);
+    paniers[4]= load_bitmap("Panier4.bmp",NULL);
+    paniers[5]= load_bitmap("Panier5.bmp",NULL);
+    paniers[6]= load_bitmap("Panier6.bmp",NULL);
+    paniers[7]= load_bitmap("Panier7.bmp",NULL);
 
     //circlefill(buffer,55,395,50, makecol(150,150,150));
     if(compteur==0){
@@ -70,17 +70,17 @@ int partie(BITMAP *buffer, t_canard tabCanard[10]){
     int start=clock();
     int compteur=0;
     SAMPLE *coin,*plouf,*fall,*win ;
-    BITMAP *fond= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\fond.bmp",NULL);
-    BITMAP *canard= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Canard.bmp",NULL);
-    BITMAP *mare= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Mare.bmp",NULL);
+    BITMAP *fond= load_bitmap("fond.bmp",NULL);
+    BITMAP *canard= load_bitmap("Canard.bmp",NULL);
+    BITMAP *mare= load_bitmap("Mare.bmp",NULL);
     BITMAP *cannes[3];
-    cannes[0]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Canne1.bmp",NULL);
-    cannes[1]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Canne2.bmp",NULL);
-    cannes[2]= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Canne3.bmp",NULL);
-    coin= load_sample("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\SF-coin.wav");
-    plouf= load_sample("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\plouf.wav");
-    fall= load_sample("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\fall.wav");
-    win= load_sample("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\win.wav");
+    cannes[0]= load_bitmap("Canne1.bmp",NULL);
+    cannes[1]= load_bitmap("Canne2.bmp",NULL);
+    cannes[2]= load_bitmap("Canne3.bmp",NULL);
+    coin= load_sample("SF-coin.wav");
+    plouf= load_sample("plouf.wav");
+    fall= load_sample("fall.wav");
+    win= load_sample("win.wav");
     while (done == 0&& clock()-start<=60000) {
         draw_sprite(buffer,fond,0,0);
         textprintf_ex(buffer,font,0,0, makecol(255,255,255),0,"%d",clock()-start);
@@ -186,8 +186,8 @@ void regles(BITMAP *buffer){
 }
 
 void menu(BITMAP *buffer,joueur *tabJoueurs){
-    BITMAP  *imageMenu= load_bitmap("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\Menu.bmp",NULL);
-    BITMAP * bulles =load_sample("C:\\Users\\Mayli\\ece-world-paris-ing1-2022-2023-equipe-13-td12\\cmake-build-debug\\Testing\\Peche aux canards\\bulles.wav");
+    BITMAP  *imageMenu= load_bitmap("Menu.bmp",NULL);
+    BITMAP * bulles =load_sample("bulles.wav");
     while(!key[KEY_ESC]){
         draw_sprite(buffer,imageMenu,0,0);
         if(mouse_x>=530 && mouse_x<=710 && mouse_y>=300 && mouse_y<=375 && mouse_b==1){

@@ -28,7 +28,6 @@ int main(void) {
 
     joueur tabJoueur[2];
     menu_map(tabJoueur);
-    //crossy_road();
     allegro_exit();
     return 0;
 }
@@ -131,12 +130,14 @@ int menu_map(joueur *tabJoueur) {
         //porte des canards
         rectfill(buffer, 30*16-10, 28*16, 32*16-10, 30*16, makecol(0, 0, 0));
         //porte crossy road
-        rectfill(buffer, 9*16, 16*16, 11*16, 18*16, makecol(155, 0, 250));
+        //rectfill(buffer, 9*16, 16*16, 11*16, 18*16, makecol(155, 0, 250));
         //porte tir aux ballons
-        rectfill(buffer, 47*16-5, 15*16, 47*16+43, 16*16+32, makecol(155, 0, 250));
+        //rectfill(buffer, 47*16-5, 15*16, 47*16+43, 16*16+32, makecol(155, 0, 250));
 
+        //affichage des joueurs en fonction de leur position
         stretch_sprite(buffer, tabJoueur[0].sprite, tabJoueur[0].x, tabJoueur[0].y, 30, 40);
         stretch_sprite(buffer, tabJoueur[1].sprite, tabJoueur[1].x, tabJoueur[1].y, 30, 40);
+
         if (key[KEY_UP] && tabJoueur[1].y > 0) {
             tabJoueur[1].y = tabJoueur[1].y - 10;
             rest(50);
@@ -184,7 +185,7 @@ int menu_map(joueur *tabJoueur) {
             crossy_road();
             crossyRoad=1;
         }
-        if(tabJoueur[0].x>=600 &&tabJoueur[0].x<=630 && tabJoueur[0].y>=390 &&tabJoueur[0].y<=430 && tirBallons==0){
+        if(tabJoueur[0].x>=47*16-5 &&tabJoueur[0].x<=47*16+43 && tabJoueur[0].y>=15*16 &&tabJoueur[0].y<=16*16+32 && tirBallons==0){
             rest(100);
             tir_aux_ballons();
             tirBallons=1;

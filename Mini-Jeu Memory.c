@@ -101,8 +101,8 @@ int partieMemory(BITMAP* buffer) {
         blit(buffer, screen, 0, 0, 0, 0, LONG, LARG);
         clear(buffer);
     }
-
-    return clock() - debut;
+    int temps=clock()-debut;
+    return temps;
 }
 
 int jeuMemory( BITMAP *buffer, joueur *tabJoueurs) {
