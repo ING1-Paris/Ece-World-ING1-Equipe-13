@@ -72,6 +72,7 @@ int menu_map(joueur *tabJoueur) {
     int tirBallons=0;
     BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
     BITMAP *sprite1 = load_bitmap("bonhomme.bmp", NULL);
+
     if (!sprite1) {
         allegro_message("pas pu trouver sprite1.bmp");
         exit(EXIT_FAILURE);
@@ -85,6 +86,7 @@ int menu_map(joueur *tabJoueur) {
     int i = 0;
     while (!key[KEY_ESC]) {
         draw_sprite(buffer,fondMap,0,0);
+
         show_mouse(buffer);
         while (i < 2) {
             tabJoueur[0].x = 38*16;
@@ -92,7 +94,9 @@ int menu_map(joueur *tabJoueur) {
             tabJoueur[1].x = 40*16;
             tabJoueur[1].y = 37*16;
             show_mouse(buffer);
-            textprintf_ex(buffer, font, 340, 50, makecol(255, 255, 255), 0, "CHOIX PERSONNAGE");
+            textprintf_ex(buffer, font, 540, 50, makecol(255, 255, 255), 0, "CHOIX PERSONNAGE");
+            textprintf_ex(buffer, font, 355, 70, makecol(255, 255, 255), 0, "Choisissez le personnage que vous allez jouer et saisissez votre nom.");
+
             if (mouse_x >= SCREEN_W / 4 - 75 && mouse_x <= SCREEN_W / 4 - 75 + 150 && mouse_y >= SCREEN_H / 4 &&
                 mouse_y <= SCREEN_H / 4 + 200) {
                 stretch_sprite(buffer, sprite1, SCREEN_W / 4 - 75, SCREEN_H / 4, 180, 240);
@@ -123,13 +127,13 @@ int menu_map(joueur *tabJoueur) {
             clear(buffer);
         }
         //porte memory
-        rectfill(buffer, 400, 190, 430, 230, makecol(155, 0, 250));
+        rectfill(buffer, 29*16, 11*16, 31*16, 13*16, makecol(155, 0, 250));
         //porte des canards
-        rectfill(buffer, 30*16+5, 28*16, 32*16+5, 30*16, makecol(155, 0, 250));
+        rectfill(buffer, 30*16-10, 28*16, 32*16-10, 30*16, makecol(0, 0, 0));
         //porte crossy road
-        rectfill(buffer, 500, 290, 530, 330, makecol(155, 0, 250));
+        rectfill(buffer, 9*16, 16*16, 11*16, 18*16, makecol(155, 0, 250));
         //porte tir aux ballons
-        rectfill(buffer, 600, 390, 630, 430, makecol(155, 0, 250));
+        rectfill(buffer, 47*16-5, 15*16, 47*16+43, 16*16+32, makecol(155, 0, 250));
 
         stretch_sprite(buffer, tabJoueur[0].sprite, tabJoueur[0].x, tabJoueur[0].y, 30, 40);
         stretch_sprite(buffer, tabJoueur[1].sprite, tabJoueur[1].x, tabJoueur[1].y, 30, 40);
@@ -165,14 +169,14 @@ int menu_map(joueur *tabJoueur) {
             tabJoueur[0].x = tabJoueur[0].x + 10;
             rest(50);
         }
-        if(tabJoueur[0].x>=30*16-5 &&tabJoueur[0].x<=32*16+5 && tabJoueur[0].y>=28*16-5 &&tabJoueur[0].y<=30*16 && peche==0 ){
+        if(tabJoueur[0].x>=30*16-10 &&tabJoueur[0].x<=32*16+5 && tabJoueur[0].y>=28*16-5 &&tabJoueur[0].y<=30*16 && peche==0 ){
             rest(300);
             jeu_canards(buffer,tabJoueur);
             peche=1;
         }
-        if(tabJoueur[0].x>=400 &&tabJoueur[0].x<=430 && tabJoueur[0].y>=190 &&tabJoueur[0].y<=230 && memory==0){
+        if(tabJoueur[0].x>=29*16 &&tabJoueur[0].x<=29*16+32 && tabJoueur[0].y>=11*16 &&tabJoueur[0].y<=13*16 && memory==0){
             rest(100);
-            jeuMemory();
+            jeuMemory(buffer, tabJoueur);
             memory=1;
         }
         if(tabJoueur[0].x>=500 &&tabJoueur[0].x<=530 && tabJoueur[0].y>=290 &&tabJoueur[0].y<=330 && crossyRoad==0){

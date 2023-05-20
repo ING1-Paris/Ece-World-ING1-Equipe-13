@@ -37,6 +37,7 @@ typedef struct Joueur {
     int performance_Canards;
     int performance_TirAuxBallons;
     int performance_CrossyRoad;
+    int performance_memory;
 }joueur;
 
 
@@ -48,13 +49,13 @@ void tank_trouble();
 void crossy_road();
 void finPartie();
 
-void jeu_canards();
+void jeu_canards(BITMAP *buffer,joueur *tabJoueurs);
 
 void tir_aux_ballons();
 
 
 
-int jeuMemory();
+int jeuMemory(BITMAP *buffer, joueur *tabJoueurs);
 
 
 

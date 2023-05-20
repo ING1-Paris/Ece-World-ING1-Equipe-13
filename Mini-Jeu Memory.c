@@ -18,6 +18,8 @@ void melangerCartes(int* tableau, int taille) {
 }
 
 int partieMemory(BITMAP* buffer) {
+    BITMAP *avantcarte= load_bitmap("Avantcarte.bmp",NULL);
+    BITMAP *doscarte= load_bitmap("Doscarte.bmp",NULL);
     int debut = clock();
     int score = 0;
     int cartePiochee1 = -1;
@@ -48,7 +50,8 @@ int partieMemory(BITMAP* buffer) {
     while (!key[KEY_ESC] && score != 12) {
         //on affiche l'ensemble des cartes face cachées
         for (int i = 0; i < 24; i++) {
-            rectfill(buffer, tabCartes[i].x, tabCartes[i].y, tabCartes[i].x + 100, tabCartes[i].y + 100, makecol(255, 255, 255));
+            //rectfill(buffer, tabCartes[i].x, tabCartes[i].y, tabCartes[i].x + 100, tabCartes[i].y + 100, makecol(255, 255, 255));
+            draw_sprite(buffer,doscarte,tabCartes[i].x, tabCartes[i].y);
         }
         //on regarde si une carte est piochée (clic)
         for (int i = 0; i < 24; i++) {
@@ -70,6 +73,7 @@ int partieMemory(BITMAP* buffer) {
         //on regarde carte si elle a été piochée ou gagnée, si oui on l'affiche de face sur le plateau
         for (int i = 0; i < 24; i++) {
             if (tabCartes[i].piochee == 1 || tabCartes[i].gagnee == 1) {
+                draw_sprite(buffer,avantcarte,tabCartes[i].x,tabCartes[i].y);
                 textprintf_ex(buffer, font, tabCartes[i].x + 50, tabCartes[i].y + 50, 0, makecol(255, 255, 255), "%d", tabCartes[i].figure);
                 //rest(500);
             }
@@ -101,16 +105,18 @@ int partieMemory(BITMAP* buffer) {
     return clock() - debut;
 }
 
-int jeuMemory() {
-    BITMAP* buffer = create_bitmap(LONG, LARG);
+int jeuMemory( BITMAP *buffer, joueur *tabJoueurs) {
     int temps1 = partieMemory(buffer);
+    temps1=tabJoueurs[0].performance_memory;
     clear(screen);
     while(!key[KEY_SPACE]){
-        textprintf_ex(screen,font,LONG/2,LARG/2,makecol(255,255,255),0,"Le joueur 1 a fait un temps de %d\n"
-                                                                       "C'est au tour du joueur 2. Tapez Espace pour commencer",temps1);
+        textprintf_ex(screen,font,LONG/2,LARG/2,makecol(255,255,255),0,"%s a fait un temps de %d",tabJoueurs[0].name,temps1);
+        textprintf_ex(screen,font,LONG/2,LARG/2+20,makecol(255,255,255),0,"C'est au tour de %s. Tapez Espace pour commencer",tabJoueurs[1].name);
+
     }
     int temps2= partieMemory(buffer);
-    textprintf_ex(screen,font,LONG/2,LARG/2,makecol(255,255,255),0,"Le joueur 2 a fait un temps de %d",temps1);
+    temps2=tabJoueurs[1].performance_memory;
+    textprintf_ex(screen,font,LONG/2,LARG/2,makecol(255,255,255),0,"%s a fait un temps de %d",tabJoueurs[1].name,temps2);
     rest(5000);
 }
 

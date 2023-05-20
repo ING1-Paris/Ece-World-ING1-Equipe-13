@@ -162,7 +162,7 @@ void jeu(BITMAP *buffer, joueur *tabJoueurs){
         textprintf_ex(screen,font,0,0,0,255,"Joueur 1 a gagné !");
         rest(2000);
     }
-    if (score1 = score2){
+    if (score1 == score2){
         textprintf_ex(screen,font,0,0,0,255,"Match nul !");
         rest(2000);
     }
@@ -175,10 +175,11 @@ void regles(BITMAP *buffer){
     while(!key[KEY_ESC]){
         clear(buffer);
         textprintf_ex(buffer,font,SCREEN_W/2-10,0,makecol(255,255,255),0,"REGLES");
-        textprintf_ex(buffer,font,0,30,makecol(255,255,255),0,"Le but du jeu est pour chaque joueur d'attraper et placer dans le panier le plus de canards en 1 minute\n"
-                                                              "Le curseur de la souris joue le rôle de canne à pêche.\n"
-                                                              "Le joueur ayant le plus grand score remporte un ticket.\n"
-                                                              "Vous pouvez quitter le jeu à tout moment en cliquant sur Echap.\n");
+        textprintf_ex(buffer,font,20,30,makecol(255,255,255),0,"Le but du jeu est pour chaque joueur d'attraper et placer dans le panier le plus de canards en 1 minute");
+        textprintf_ex(buffer,font,20,50,makecol(255,255,255),0,"Le curseur de la souris joue le rôle de canne à pêche.");
+        textprintf_ex(buffer,font,20,70,makecol(255,255,255),0,"Le joueur ayant le plus grand score remporte un ticket.");
+        textprintf_ex(buffer,font,20,90,makecol(255,255,255),0,"Vous pouvez quitter le jeu à tout moment en cliquant sur Echap.");
+        show_mouse(buffer);
         blit(buffer,screen,0,0,0,0,SCREEN_W,SCREEN_H);
     }
     rest(800);
@@ -206,7 +207,6 @@ void menu(BITMAP *buffer,joueur *tabJoueurs){
     }
 }
 void jeu_canards(BITMAP *buffer,joueur *tabJoueurs) {
-    //BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
     menu(buffer,tabJoueurs);
 }
 
