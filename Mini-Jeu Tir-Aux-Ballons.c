@@ -4,16 +4,34 @@
 
 #include "Header.h"
 
+#define MAX_IMAGES_BALLONS 6
 
-void initialisationAllegro();
+typedef struct {
+    int x;
+    int y;
+    int dx;
+    int dy;
+    int eclate;
+    BITMAP* image;
+}Ballon;
+
+typedef struct joueur{
+    int numJoueur;
+    char nomJoueur[15];
+    long temps;
+}Joueur;
+
+
 int collide_point_cercle(int point_x, int point_y, int cercle_x, int cercle_y, int rayon);
 int determinerGagnant(long tempsJoueur1, long tempsJoueur2);
+int partie_tb(BITMAP *buffer, long *tempsJoueur1, long *tempsJoueur2,int joueur);
+
 
 long tempsJoueur1 = 0;
 long tempsJoueur2 = 0;
 
 
-int partie(BITMAP *buffer, long *tempsJoueur1, long *tempsJoueur2,int joueur){
+int partie_tb(BITMAP *buffer, long *tempsJoueur1, long *tempsJoueur2,int joueur){
     //declaration de variables
     BITMAP *numeroBallons[MAX_IMAGES_BALLONS];
     numeroBallons[0] = load_bitmap("ballon 1.bmp", NULL);
@@ -24,12 +42,11 @@ int partie(BITMAP *buffer, long *tempsJoueur1, long *tempsJoueur2,int joueur){
     numeroBallons[5] = load_bitmap("ballon 6.bmp", NULL);
     int ballonClique = -1; //au début aucun ballon n'ést cliqué
     int tempsDebut = clock(); // temps de début du jeu pour le joueur courant
-    int joueurActuel = joueur;
     int compteur=0;
     long tempsJoueur;
 
 
-    // Charger un fond
+    // Charger le fond
     BITMAP *fond = load_bitmap("fond jeu.bmp", NULL);
     if (!fond) {
         allegro_message("prb chargement image");
@@ -66,20 +83,13 @@ int partie(BITMAP *buffer, long *tempsJoueur1, long *tempsJoueur2,int joueur){
                     ballons[i].eclate = 1; // marquer le ballon comme étant éclaté
                     compteur++;
                     ballonClique = i; // enregistrer l'indice du ballon cliqué
-                    /*if (joueurActuel == 1 && tousBallonsEclates(ballons)==1) {
-
-                                            }
-                    else if(joueurActuel == 2 && tousBallonsEclates(ballons)==1){
-                        //ouvrir ecran score
-
-                    }*/
                 }
             }
         }
 
         for(int i=0; i<MAX_IMAGES_BALLONS; i++){
             if (!ballons[i].eclate){
-                if (i != ballonClique) { // afficher le ballon si ce n'est pas celui qui a été cliqué
+                if (i != ballonClique) { // afficher le ballon si ce n'est pas celui qui a été cliqué/explosé
                     stretch_sprite(buffer, ballons[i].image, ballons[i].x, ballons[i].y, 200, 200);
                 }
 
@@ -120,44 +130,6 @@ int partie(BITMAP *buffer, long *tempsJoueur1, long *tempsJoueur2,int joueur){
     }
 }
 
-int main() {
-    //initialisation allegro mis dans un sous-programme
-    initialisationAllegro();
-    install_keyboard();
-    install_mouse();
-    srand(time(NULL));
-    BITMAP * buffer= create_bitmap(SCREEN_W,SCREEN_H);
-    Joueur joueurs[1];
-    int joueur = 1;
-    partie(buffer, &tempsJoueur1, &tempsJoueur2, joueur);
-    joueur=2;
-    clear(buffer);
-    partie(buffer, &tempsJoueur1, &tempsJoueur2, joueur);
-
-    textprintf_ex(buffer, font, SCREEN_W / 2 -50, 10, makecol(255, 255, 255), -1, "Joueur 1: %ld s", tempsJoueur1);
-    textprintf_ex(buffer, font, SCREEN_W /2 -50, 30, makecol(255, 255, 255), -1, "Joueur 2: %ld s", tempsJoueur2);
-
-    int gagnant = determinerGagnant(tempsJoueur1, tempsJoueur2);
-    if (gagnant == 1)
-        textprintf_ex(buffer, font, SCREEN_W - 650, 50, makecol(255, 255, 255), -1, "Le Joueur 1 a gagné, félicitations vous remportez un ticket !!");
-    else if (gagnant == 2)
-        textprintf_ex(buffer, font, SCREEN_W -650, 50, makecol(255, 255, 255), -1, "Le Joueur 2 a gagné, félicitations vous remportez un ticket !!");
-    else
-        textprintf_ex(buffer, font, SCREEN_W - 650, 50, makecol(255, 255, 255), -1, "Match Nul !!");
-    blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
-    readkey();
-    return 0;
-}END_OF_MAIN();
-
-void initialisationAllegro() {
-    allegro_init();
-    set_color_depth(desktop_color_depth());
-    if ((set_gfx_mode(GFX_AUTODETECT_WINDOWED, 800, 600, 0, 0)) != 0) {
-        allegro_message("Pb de mode graphique");
-        allegro_exit();
-        exit(EXIT_FAILURE);
-    }
-}
 
 int collide_point_cercle(int point_x, int point_y, int cercle_x, int cercle_y, int rayon) {
     int dist_x = point_x - cercle_x;
@@ -176,4 +148,29 @@ int determinerGagnant(long tempsJoueur1, long tempsJoueur2){
     else{
         return 0;
     }
+}
+
+
+void tir_aux_ballons(){
+    srand(time(NULL));
+    BITMAP * buffer= create_bitmap(SCREEN_W,SCREEN_H);
+    Joueur joueurs[1];
+    int joueur = 1;
+    partie_tb(buffer, &tempsJoueur1, &tempsJoueur2, joueur);
+    joueur=2;
+    clear(buffer);
+    partie_tb(buffer, &tempsJoueur1, &tempsJoueur2, joueur);
+
+    textprintf_ex(buffer, font, SCREEN_W / 2 -50, 10, makecol(255, 255, 255), -1, "Joueur 1: %ld s", tempsJoueur1);
+    textprintf_ex(buffer, font, SCREEN_W /2 -50, 30, makecol(255, 255, 255), -1, "Joueur 2: %ld s", tempsJoueur2);
+
+    int gagnant = determinerGagnant(tempsJoueur1, tempsJoueur2);
+    if (gagnant == 1)
+        textprintf_ex(buffer, font, SCREEN_W - 650, 50, makecol(255, 255, 255), -1, "Le Joueur 1 a gagné, félicitations vous remportez un ticket !!");
+    else if (gagnant == 2)
+        textprintf_ex(buffer, font, SCREEN_W -650, 50, makecol(255, 255, 255), -1, "Le Joueur 2 a gagné, félicitations vous remportez un ticket !!");
+    else
+        textprintf_ex(buffer, font, SCREEN_W - 650, 50, makecol(255, 255, 255), -1, "Match Nul !!");
+    blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
+    readkey();
 }

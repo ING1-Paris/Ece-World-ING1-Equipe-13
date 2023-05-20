@@ -69,11 +69,13 @@ int menu_map(joueur *tabJoueur) {
     int memory=0;
     int crossyRoad=0;
     int peche=0;
+    int tirBallons=0;
     BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
     BITMAP *sprite1 = load_bitmap("bonhomme.bmp", NULL);
     BITMAP *maisonCanard = load_bitmap("maisonCanard.bmp", NULL);
     BITMAP  *CrossyRoad= load_bitmap("MaisonRoad.bmp",NULL);
     BITMAP *arche= load_bitmap("Arche.bmp",NULL);
+    BITMAP *maisonTirBallons= load_bitmap("maisonTirBallons.bmp", NULL);
     if (!sprite1) {
         allegro_message("pas pu trouver sprite1.bmp");
         exit(EXIT_FAILURE);
@@ -124,12 +126,15 @@ int menu_map(joueur *tabJoueur) {
         }
         stretch_sprite(buffer, maisonCanard, 260, 34, 100, 100);
         stretch_sprite(buffer, CrossyRoad, 100, 159, 150, 150);
+        stretch_sprite(buffer, maisonTirBallons, 360, 234, 100, 100);
         //porte memory
         rectfill(buffer, 400, 190, 430, 230, makecol(155, 0, 250));
         //porte des canards
         rectfill(buffer, 300, 90, 330, 130, makecol(155, 0, 250));
         //porte crossy road
         rectfill(buffer, 500, 290, 530, 330, makecol(155, 0, 250));
+        //porte tir aux ballons
+        rectfill(buffer, 600, 390, 630, 430, makecol(155, 0, 250));
 
         stretch_sprite(buffer, tabJoueur[0].sprite, tabJoueur[0].x, tabJoueur[0].y, 30, 40);
         stretch_sprite(buffer, tabJoueur[1].sprite, tabJoueur[1].x, tabJoueur[1].y, 30, 40);
@@ -180,6 +185,11 @@ int menu_map(joueur *tabJoueur) {
             rest(100);
             crossy_road();
             crossyRoad=1;
+        }
+        if(tabJoueur[0].x>=600 &&tabJoueur[0].x<=630 && tabJoueur[0].y>=390 &&tabJoueur[0].y<=430 && tirBallons==0){
+            rest(100);
+            tir_aux_ballons();
+            tirBallons=1;
         }
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(buffer);
