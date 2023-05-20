@@ -92,6 +92,9 @@ int menu_map(joueur *tabJoueur) {
             tabJoueur[0].y = 37*16;
             tabJoueur[1].x = 40*16;
             tabJoueur[1].y = 37*16;
+            tabJoueur[0].tickets=0;
+            tabJoueur[1].tickets=0;
+
             show_mouse(buffer);
             textprintf_ex(buffer, font, 540, 50, makecol(255, 255, 255), 0, "CHOIX PERSONNAGE");
             textprintf_ex(buffer, font, 355, 70, makecol(255, 255, 255), 0, "Choisissez le personnage que vous allez jouer et saisissez votre nom.");
@@ -180,7 +183,7 @@ int menu_map(joueur *tabJoueur) {
             jeuMemory(buffer, tabJoueur);
             memory=1;
         }
-        if(tabJoueur[0].x>=500 &&tabJoueur[0].x<=530 && tabJoueur[0].y>=290 &&tabJoueur[0].y<=330 && crossyRoad==0){
+        if(tabJoueur[0].x>=9*16-10 &&tabJoueur[0].x<=11*16 && tabJoueur[0].y>=16*16 &&tabJoueur[0].y<=18*16 && crossyRoad==0){
             rest(100);
             crossy_road();
             crossyRoad=1;
@@ -193,4 +196,5 @@ int menu_map(joueur *tabJoueur) {
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(buffer);
     }
+    return 0;
 }

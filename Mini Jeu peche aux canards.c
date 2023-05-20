@@ -149,25 +149,28 @@ void jeu(BITMAP *buffer, joueur *tabJoueurs){
     int score1=partie(buffer,tabCanard);
     clear(screen);
     while(!key[KEY_SPACE]){
-        textprintf_ex(screen,font,0,0, makecol(255,255,0), makecol(255,0,255),"%s a réalisé un score de %d\n "
+        textprintf_ex(screen,font,0,0, makecol(255,255,255), makecol(0,0,0),"%s a réalisé un score de %d\n "
                                                                               "C'est au tour de %s, cliquez sur espace pour commencer votre partie", tabJoueurs[0].name, score1, tabJoueurs[1].name);
 
     }
     int score2= partie(buffer,tabCanard);
     clear(screen);
-    textprintf_ex(screen,font,0,0, makecol(255,255,0), makecol(255,0,255),"%d", score2);
+    textprintf_ex(screen,font,0,0, makecol(255,255,255), makecol(0,0,0),"%d", score2);
     rest(2000);
     clear(screen);
     if (score1 >score2){
-        textprintf_ex(screen,font,0,0,0,255,"Joueur 1 a gagné !");
+        textprintf_ex(screen,font,0,0,makecol(255,255,255), makecol(0,0,0),"%s a gagné !",tabJoueurs[0].name);
+        tabJoueurs[0].tickets++;
         rest(2000);
     }
     if (score1 == score2){
-        textprintf_ex(screen,font,0,0,0,255,"Match nul !");
+        textprintf_ex(screen,font,0,0,makecol(255,255,255), makecol(0,0,0),"Match nul !");
         rest(2000);
     }
     if (score1 <score2){
-        textprintf_ex(screen,font,0,0,0,255,"Joueur 2 a gagné !");
+
+        textprintf_ex(screen,font,0,0,makecol(255,255,255), makecol(0,0,0),"%s a gagné !",tabJoueurs[1].name);
+        tabJoueurs[1].tickets++;
         rest(2000);
     }
 }
