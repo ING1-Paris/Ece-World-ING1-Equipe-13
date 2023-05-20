@@ -132,7 +132,7 @@ int jeuMemory( BITMAP *buffer, joueur *tabJoueurs) {
         tabJoueurs[1].tickets++;
         rest(2000);
     }
-}
+
     return 0;
 }
 
