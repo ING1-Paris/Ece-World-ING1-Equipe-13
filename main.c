@@ -193,6 +193,12 @@ int menu_map(joueur *tabJoueur) {
             tir_aux_ballons();
             tirBallons=1;
         }
+        if(tabJoueur[0].x>=38*16-10 &&tabJoueur[0].x<=42*16+5 && tabJoueur[0].y>=38*16){
+            return 0;
+        }
+        if(tabJoueur[1].x>=38*16-10 &&tabJoueur[1].x<=42*16+5 && tabJoueur[1].y>=38*16){
+            return 0;
+        }
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(buffer);
     }
