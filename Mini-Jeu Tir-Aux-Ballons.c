@@ -153,8 +153,8 @@ void tir_aux_ballons(){
     clear(buffer);
     partie_tb(buffer, &tempsJoueur1, &tempsJoueur2, joueur);
 
-    textprintf_ex(buffer, font, SCREEN_W / 2 -50, 10, makecol(255, 255, 255), -1, "Joueur 1: %ld s", tempsJoueur1);
-    textprintf_ex(buffer, font, SCREEN_W /2 -50, 30, makecol(255, 255, 255), -1, "Joueur 2: %ld s", tempsJoueur2);
+    textprintf_ex(buffer, font, SCREEN_W / 2 -50, 10, makecol(255, 255, 255), -1, "Joueur 1: %ld s", tempsJoueur1/1000);
+    textprintf_ex(buffer, font, SCREEN_W /2 -50, 30, makecol(255, 255, 255), -1, "Joueur 2: %ld s", tempsJoueur2/1000);
 
     int gagnant = determinerGagnant(tempsJoueur1, tempsJoueur2);
     if (gagnant == 1)
