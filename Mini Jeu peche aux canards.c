@@ -146,6 +146,9 @@ int partie(BITMAP *buffer, t_canard tabCanard[10]){
 }
 void jeu(BITMAP *buffer, joueur *tabJoueurs){
     t_canard tabCanard[10];
+    BITMAP *ticket= load_bitmap("ticket.bmp",NULL);
+    SAMPLE *win= load_sample("win.wav");
+
     //Le premier joueur commence à jouer et on stocke son score
     int score1=partie(buffer,tabCanard);
     clear(screen);
@@ -156,23 +159,25 @@ void jeu(BITMAP *buffer, joueur *tabJoueurs){
     }
     int score2= partie(buffer,tabCanard);
     clear(screen);
-    textprintf_ex(screen,font,SCREEN_W/4,SCREEN_H/2, makecol(255,255,255), makecol(0,0,0),"%s a réalisé un score de %d", tabJoueurs[1].name, score2);
+    textprintf_ex(screen,font,SCREEN_W/4,SCREEN_H/3, makecol(255,255,255), makecol(0,0,0),"%s a réalisé un score de %d", tabJoueurs[1].name, score2);
     rest(2000);
     clear(screen);
     if (score1 >score2){
-        textprintf_ex(screen,font,SCREEN_W/4,SCREEN_H/2,makecol(255,255,255), makecol(0,0,0),"%s a gagné avec un score de %d contre %d !",tabJoueurs[0].name, score1,score2);
+        play_sample(win,255,100,1000,0);
+        textprintf_ex(screen,font,SCREEN_W/4,SCREEN_H/3,makecol(255,255,255), makecol(0,0,0),"%s a gagné avec un score de %d contre %d !",tabJoueurs[0].name, score1,score2);
+        stretch_sprite(screen,ticket,largeur/4,hauteur/2-50,largeur/2,(largeur/2)*280/390);
         tabJoueurs[0].tickets++;
-        rest(2000);
+        rest(3000);
     }
     if (score1 == score2){
         textprintf_ex(screen,font,SCREEN_W/4,SCREEN_H/2,makecol(255,255,255), makecol(0,0,0),"Match nul avec un score de %d partout!",score2);
-        rest(2000);
+        rest(3000);
     }
     if (score1 <score2){
-
+        play_sample(win,255,100,1000,0);
         textprintf_ex(screen,font,SCREEN_W/4,SCREEN_H/2,makecol(255,255,255), makecol(0,0,0),"%s a gagné avec un score de %d contre %d !",tabJoueurs[1].name,score2,score1);
         tabJoueurs[1].tickets++;
-        rest(2000);
+        rest(3000);
     }
 }
 void regles(BITMAP *buffer){
