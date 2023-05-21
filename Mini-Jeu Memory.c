@@ -107,7 +107,7 @@ long partieMemory(BITMAP* buffer) {
 
 int jeuMemory( BITMAP *buffer, joueur *tabJoueurs) {
     BITMAP *ticket= load_bitmap("ticket.bmp",NULL);
-    long temps1 /*= partieMemory(buffer)*/;
+    long temps1 = partieMemory(buffer);
     tabJoueurs[0].performance_memory=temps1;
     clear(screen);
     while(!key[KEY_SPACE]){
@@ -115,7 +115,7 @@ int jeuMemory( BITMAP *buffer, joueur *tabJoueurs) {
         textprintf_ex(screen, font, largeur / 2, hauteur / 2 + 20, makecol(255, 255, 255), 0, "C'est au tour de %s. Tapez Espace pour commencer", tabJoueurs[1].name);
 
     }
-    long temps2/*= partieMemory(buffer)*/;
+    long temps2= partieMemory(buffer);
     tabJoueurs[1].performance_memory=temps2;
     clear(screen);
     textprintf_ex(screen, font, largeur / 2, hauteur / 2, makecol(255, 255, 255), 0, "%s a fait un temps de %ld", tabJoueurs[1].name, temps2 / 1000);
