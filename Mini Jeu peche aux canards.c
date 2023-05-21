@@ -3,9 +3,6 @@
 typedef struct canard {
     int x;
     int y;
-    int dx;
-    int dy;
-    int color;
     int orientation;
     int attrape;
 } t_canard;
@@ -94,11 +91,9 @@ int partie(BITMAP *buffer, t_canard tabCanard[10]){
             if (canne == 0 && index_canard == -1 &&
                 (mouse_x >= tabCanard[i].x - 30 && mouse_x <= tabCanard[i].x + 30) &&
                 (mouse_y >= tabCanard[i].y - 30 && mouse_y <= tabCanard[i].y + 30)) {
-                tabCanard[i].color = makecol(255, 200, 0);
                 if (mouse_b == 1) {
                     canne = 1;
                     play_sample(coin,255,100,1000,0);
-                    tabCanard[i].color = makecol(255, 150, 0);
                     tabCanard[i].x = mouse_x;
                     tabCanard[i].y = mouse_y;
                     tabCanard[i].attrape = 1;
@@ -110,7 +105,6 @@ int partie(BITMAP *buffer, t_canard tabCanard[10]){
             }
             else {
                 canne = 0;
-                tabCanard[i].color = makecol(255, 255, 0);
             }
             rotate_sprite(buffer,canard,tabCanard[i].x-45,tabCanard[i].y-45, itofix(tabCanard[i].orientation));
         }
