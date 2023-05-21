@@ -88,7 +88,7 @@ void crossy_road(){
 
     int decalage =500;
     BITMAP *buffer; //Double buffer
-    buffer =create_bitmap(LONG,LARG+decalage);
+    buffer =create_bitmap(largeur, hauteur + decalage);
     clear_bitmap(buffer);
 
     //██╗   ██╗ █████╗ ██████╗ ██╗ █████╗ ██████╗ ██╗     ███████╗███████╗
@@ -104,7 +104,7 @@ void crossy_road(){
     for(int i=0; i<NBR_RONDIN; i++) {
         tabTronc[i].type =rand() % (3); //Random entre 0 et 2 soit les 3 tailles de tronc possible
         tabTronc[i].taille =200 - tabTronc[i].type*50; //Taille du tronc
-        tabTronc[i].troncY =(LARG+decalage)-200-i*50; //Position en Y du tronc
+        tabTronc[i].troncY = (hauteur + decalage) - 200 - i * 50; //Position en Y du tronc
     }
     for(int i=0; i <NBR_RONDIN; i +=2){ //Position initiale troncs pairs à gauche
         tabTronc[i].troncX =50;
@@ -112,7 +112,7 @@ void crossy_road(){
             tabTronc[i].troncX2 = tabTronc[i].troncX -300;
     }
     for(int i=1; i <NBR_RONDIN; i +=2){ //Position initiale troncs impairs à droite
-        tabTronc[i].troncX =LONG -150;
+        tabTronc[i].troncX = largeur - 150;
         if(tabTronc[i].type ==2)
             tabTronc[i].troncX2 = tabTronc[i].troncX +300;
     }
@@ -131,10 +131,10 @@ void crossy_road(){
     tabTonk[3].vitesse =6; tabTonk[4].vitesse =4; tabTonk[5].vitesse =7;
     for(int i=0; i<3; i++){
         tabTonk[i].tonkX =200;
-        tabTonk[i].tonkY =LARG +decalage-700 +50*i;}
+        tabTonk[i].tonkY = hauteur + decalage - 700 + 50 * i;}
     for(int i=0; i<3; i++){
         tabTonk[i+3].tonkX =170;
-        tabTonk[i+3].tonkY =LARG +decalage-700 +50*i;}
+        tabTonk[i+3].tonkY = hauteur + decalage - 700 + 50 * i;}
 
 
     //Temps
@@ -143,8 +143,8 @@ void crossy_road(){
 
     //Joueur
     t_joueur tabJoueur[2];
-    tabJoueur[0].posX =LONG/2; tabJoueur[0].posY =LARG +decalage-50;
-    tabJoueur[1].posX =LONG/2; tabJoueur[1].posY =LARG +decalage-50;
+    tabJoueur[0].posX = largeur / 2; tabJoueur[0].posY = hauteur + decalage - 50;
+    tabJoueur[1].posX = largeur / 2; tabJoueur[1].posY = hauteur + decalage - 50;
     int JoueurEnCours =0;
     int scancode =0, touche =0; //Clavier
 
@@ -181,13 +181,13 @@ void crossy_road(){
 
         ///############### AFFICHAGE TERRAIN ###############
         //Terrain
-        draw_sprite(buffer, herbe[1], 300, LARG +decalage -1200); //Herbe très haute
-        draw_sprite(buffer, riviere, 300, LARG +decalage -1050); //Rivière 2
-        draw_sprite(buffer, herbe[2], 300, LARG +decalage -800); //Herbe haute
-        draw_sprite(buffer, herbe[0], 300, LARG +decalage -550); //Herbe moyenne
-        draw_sprite(buffer, route, 300, LARG +decalage -700 -15); //Route
-        draw_sprite(buffer, riviere, 300, LARG +decalage -450); //Rivière
-        draw_sprite(buffer, herbe[1], 300, LARG +decalage -150); //Herbe basse
+        draw_sprite(buffer, herbe[1], 300, hauteur + decalage - 1200); //Herbe très haute
+        draw_sprite(buffer, riviere, 300, hauteur + decalage - 1050); //Rivière 2
+        draw_sprite(buffer, herbe[2], 300, hauteur + decalage - 800); //Herbe haute
+        draw_sprite(buffer, herbe[0], 300, hauteur + decalage - 550); //Herbe moyenne
+        draw_sprite(buffer, route, 300, hauteur + decalage - 700 - 15); //Route
+        draw_sprite(buffer, riviere, 300, hauteur + decalage - 450); //Rivière
+        draw_sprite(buffer, herbe[1], 300, hauteur + decalage - 150); //Herbe basse
         draw_sprite(buffer, finish, 550, 0);
 
         ///############### BOUCLE POUR TOUTES LES ANIMATIONS ###############
@@ -227,8 +227,8 @@ void crossy_road(){
             if(tabTronc[i].type ==2 && tabTronc[i].troncX2 >950){ tabTronc[i].troncX2 =85 + tabTronc[i].type*50;}
         }
         for(int i=1; i<NBR_RONDIN; i +=2) { //Rondin de droite à gauche
-            if(tabTronc[i].troncX <85 + tabTronc[i].type*50){                         tabTronc[i].troncX =LONG -245;}
-            if(tabTronc[i].type ==2 && tabTronc[i].troncX2 <85 + tabTronc[i].type*50){tabTronc[i].troncX2 =LONG -245;}
+            if(tabTronc[i].troncX <85 + tabTronc[i].type*50){                         tabTronc[i].troncX = largeur - 245;}
+            if(tabTronc[i].type ==2 && tabTronc[i].troncX2 <85 + tabTronc[i].type*50){tabTronc[i].troncX2 = largeur - 245;}
         }
         for(int i=0; i <NBR_RONDIN; i++){ //BOUCLE FINALE AFFICHAGE DES RONDINS
             draw_sprite(buffer, tronc[tabTronc[i].type], tabTronc[i].troncX, tabTronc[i].troncY); //Affichage du rondin
@@ -286,9 +286,9 @@ void crossy_road(){
 
         ///############### PONT + RONDINS FOND DE MAP ###############
         //Pont
-        rotate_sprite(buffer, tronc[1], LARG/2 +180, 250, itofix(-64));
-        rotate_sprite(buffer, tronc[1], LARG/2 +230, 250, itofix(-64));
-        rotate_sprite(buffer, tronc[1], LARG/2 +280, 250, itofix(-64));
+        rotate_sprite(buffer, tronc[1], hauteur / 2 + 180, 250, itofix(-64));
+        rotate_sprite(buffer, tronc[1], hauteur / 2 + 230, 250, itofix(-64));
+        rotate_sprite(buffer, tronc[1], hauteur / 2 + 280, 250, itofix(-64));
 
         //Troncs Fond de map
         for(int i =0; i<2; i++){ //Affichage
@@ -309,7 +309,7 @@ void crossy_road(){
             }
         } //Detection si joueur sur tronc du fond
         if(tabJoueur[JoueurEnCours].posY/50 <=6 && tabJoueur[JoueurEnCours].posY/50 >=4){
-            if(tabJoueur[JoueurEnCours].posX >=LARG/2 +200 && tabJoueur[JoueurEnCours].posX <= LARG/2 +350){
+            if(tabJoueur[JoueurEnCours].posX >= hauteur / 2 + 200 && tabJoueur[JoueurEnCours].posX <= hauteur / 2 + 350){
                 surTroncFondMap =1;
             }
             else{surTroncFondMap =0;}
@@ -322,9 +322,9 @@ void crossy_road(){
 
         //Grille
         /*for(int i=6; i <20; i++){ //De base 24 carrés moins 5 de chaque côtés
-            vline(buffer, i*50, 0, LARG+decalage, makecol(255,255,255));}
+            vline(buffer, i*50, 0, hauteur+decalage, makecol(255,255,255));}
         for(int i=0; i <23; i++){
-            hline(buffer, 0, i*50, LONG, makecol(255,255,255));}*/
+            hline(buffer, 0, i*50, largeur, makecol(255,255,255));}*/
 
         //Buffer
             //Décalage hors écran
@@ -332,15 +332,15 @@ void crossy_road(){
             boucle =1;
             modifTerrain =decalage;
             for(int i=0; i<500; i++){
-                blit(buffer,screen,0,decalage-i,0,0,LONG,LARG+decalage);}
+                blit(buffer, screen, 0,decalage-i, 0, 0, largeur, hauteur + decalage);}
         }
         if(tabJoueur[JoueurEnCours].posY >=650 && boucle ==1){
             boucle =0;
             modifTerrain =0;
             for(int i=0; i<500; i++){
-                blit(buffer,screen,0,i,0,0,LONG,LARG+decalage);}
+                blit(buffer, screen, 0, i, 0, 0, largeur, hauteur + decalage);}
         }
-        blit(buffer,screen,0,decalage-modifTerrain,0,0,LONG,LARG+decalage);
+        blit(buffer, screen, 0,decalage-modifTerrain, 0, 0, largeur, hauteur + decalage);
         clear_bitmap(buffer);
 
 
@@ -360,7 +360,7 @@ void crossy_road(){
         if(defaite ==1) {
             if (JoueurEnCours == 1) { finPartie(); }
             draw_sprite(buffer, perso, tabJoueur[JoueurEnCours].posX + 5, tabJoueur[JoueurEnCours].posY);
-            blit(buffer, screen, 0, decalage - modifTerrain, 0, 0, LONG, LARG + decalage);
+            blit(buffer, screen, 0, decalage - modifTerrain, 0, 0, largeur, hauteur + decalage);
             draw_sprite(screen, gameover, 325, 150);
             while (!key[KEY_ENTER]) { rest(10); }
             clear_bitmap(screen);
@@ -381,8 +381,8 @@ void joueurSuivant(int *JoueurEnCours, t_joueur tabJoueur[2], int decalage, int 
     tabJoueur[*JoueurEnCours].posX = 400;
 
     ///Reset des joueurs
-    tabJoueur[0].posX =LONG/2; tabJoueur[0].posY =LARG +decalage-50;
-    tabJoueur[1].posX =LONG/2; tabJoueur[1].posY =LARG +decalage-50;
+    tabJoueur[0].posX = largeur / 2; tabJoueur[0].posY = hauteur + decalage - 50;
+    tabJoueur[1].posX = largeur / 2; tabJoueur[1].posY = hauteur + decalage - 50;
     ///Reset des troncs
     surTronc =0;
     for(int i=0; i <NBR_RONDIN; i +=2){ //Position initiale troncs pairs à gauche
@@ -390,7 +390,7 @@ void joueurSuivant(int *JoueurEnCours, t_joueur tabJoueur[2], int decalage, int 
         if(tabTronc[i].type ==2)
             tabTronc[i].troncX2 = tabTronc[i].troncX -300;}
     for(int i=1; i <NBR_RONDIN; i +=2){ //Position initiale troncs impairs à droite
-        tabTronc[i].troncX =LONG -150;
+        tabTronc[i].troncX = largeur - 150;
         if(tabTronc[i].type ==2)
             tabTronc[i].troncX2 = tabTronc[i].troncX +300;}
 }

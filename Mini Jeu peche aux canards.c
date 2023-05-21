@@ -117,6 +117,7 @@ int partie(BITMAP *buffer, t_canard tabCanard[10]){
         if (index_canard != -1) {
             tabCanard[index_canard].x = mouse_x;
             tabCanard[index_canard].y = mouse_y;
+            rest(10);
             if (mouse_b == 0) {
                 if(mouse_x>=150&&mouse_x<=1050&&mouse_y>=50&&mouse_y<=600){
                     play_sample(plouf,255, 128, 1000, 0);
