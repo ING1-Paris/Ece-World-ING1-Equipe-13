@@ -30,15 +30,41 @@ int main(void) {
     allegro_exit();
     return 0;
 }
-
 END_OF_MAIN()
-void ecran_score(BITMAP *buffer){
+
+void ecran_score(BITMAP *buffer, joueur *tabJoueur){
     clear(buffer);
     clear(screen);
     BITMAP *scores =load_bitmap("SCORES.bmp",NULL);
+    clear_to_color(buffer,makecol(255,255,255));
     while(!key[KEY_SPACE]){
-        textprintf_ex(buffer,font,largeur/2 - text_length(font,"ECRAN SCORE"),hauteur/8,makecol(255,255,255), makecol(0,0,0),"ECRAN SCORE");
+        draw_sprite(buffer,scores,200,15);
+        textprintf_ex(buffer, font, 350, 200, makecol(0, 0, 0),-1, "JOUEUR 1");
+        textprintf_ex(buffer, font, 900, 200, makecol(0, 0, 0),-1, "JOUEUR 2");
+
+        textprintf_ex(buffer, font, 10, 250, makecol(0, 0, 0),-1, "Score a la peche aux canards :");
+        textprintf_ex(buffer, font, 350, 250, makecol(0, 0, 0),-1, "%d", tabJoueur[0].performance_Canards);
+        textprintf_ex(buffer, font, 900, 250, makecol(0, 0, 0),-1, "%d", tabJoueur[1].performance_Canards);
+
+        textprintf_ex(buffer, font, 10, 300, makecol(0, 0, 0),-1, "Score au tir aux ballons :");
+        textprintf_ex(buffer, font, 350, 300, makecol(0, 0, 0),-1, "%d", tabJoueur[0].performance_TirAuxBallons);
+        textprintf_ex(buffer, font, 900, 300, makecol(0, 0, 0),-1, "%d", tabJoueur[1].performance_TirAuxBallons);
+
+        textprintf_ex(buffer, font, 10, 350, makecol(0, 0, 0),-1, "Score au crossy road :");
+        textprintf_ex(buffer, font, 350, 350, makecol(0, 0, 0),-1, "%d", tabJoueur[0].performance_CrossyRoad);
+        textprintf_ex(buffer, font, 900, 350, makecol(0, 0, 0),-1, "%d", tabJoueur[1].performance_CrossyRoad);
+
+        textprintf_ex(buffer, font, 10, 400, makecol(0, 0, 0),-1, "Score au memory :");
+        textprintf_ex(buffer, font, 350, 400, makecol(0, 0, 0),-1, "%d", tabJoueur[0].performance_Memory);
+        textprintf_ex(buffer, font, 900, 400, makecol(0, 0, 0),-1, "%d", tabJoueur[1].performance_Memory);
+
+        textprintf_ex(buffer, font, 400, 650, makecol(0, 0, 0),-1, "Appuyez sur espace pour continuer");
         blit(buffer, screen, 0, 0, 0, 0, largeur, hauteur);
+    }
+    clear(buffer);
+    for(int i=0; i<2; i++){ //Reset de la position des joueurs
+        tabJoueur[i].x =(38 +i*2)*16;
+        tabJoueur[i].y =37*16;
     }
 }
 
@@ -73,10 +99,6 @@ void nomJoueur(char *name, BITMAP* buffer,int i)
 }
 
 int menu_map(joueur *tabJoueur) {
-    int memory=0;
-    int crossyRoad=0;
-    int peche=0;
-    int tirBallons=0;
     BITMAP *buffer = create_bitmap(SCREEN_W, SCREEN_H);
     BITMAP *sprite1 = load_bitmap("bonhomme.bmp", NULL);
 
@@ -92,11 +114,12 @@ int menu_map(joueur *tabJoueur) {
     BITMAP *fondMap= load_bitmap("map.bmp",NULL);
     BITMAP *porte= load_bitmap("porte.bmp",NULL);
     BITMAP *ticket= load_bitmap("ticket.bmp",NULL);
-    int i = 0;
-    while (!key[KEY_ESC]) {
+    int iter = 0;
+    while (!key[KEY_CAPSLOCK]) {
         draw_sprite(buffer,fondMap,0,0);
 
-        while (i < 2) {
+        while (iter < 2) {
+            ///INITIALISATION DES VARIABLES JOUEUR
             tabJoueur[0].x = 38*16;
             tabJoueur[0].y = 37*16;
             tabJoueur[1].x = 40*16;
@@ -104,6 +127,7 @@ int menu_map(joueur *tabJoueur) {
             tabJoueur[0].tickets=5;
             tabJoueur[1].tickets=5;
 
+            ///LANCEMENT DU CHOIX DU PERSO
             textprintf_ex(buffer, font, 540, 50, makecol(255, 255, 255), 0, "CHOIX PERSONNAGE");
             textprintf_ex(buffer, font, 355, 70, makecol(255, 255, 255), 0, "Choisissez le personnage que vous allez jouer et saisissez votre nom.");
 
@@ -112,20 +136,20 @@ int menu_map(joueur *tabJoueur) {
                 stretch_sprite(buffer, sprite1, SCREEN_W / 4 - 75, SCREEN_H / 4, 180, 240);
                 stretch_sprite(buffer, sprite2, SCREEN_W * 6 / 8 - 75, SCREEN_H / 4, 150, 200);
                 if (mouse_b == 1) {
-                    tabJoueur[i].sprite = sprite1;
-                    nomJoueur(tabJoueur[i].name,buffer,i);
+                    tabJoueur[iter].sprite = sprite1;
+                    nomJoueur(tabJoueur[iter].name,buffer,iter);
                     rest(500);
-                    i++;
+                    iter++;
                 }
             } else if (mouse_x >= SCREEN_W * 6 / 8 - 75 && mouse_x <= SCREEN_W * 6 / 8 - 75 + 150 &&
                        mouse_y >= SCREEN_H / 4 && mouse_y <= SCREEN_H / 4 + 200) {
                 stretch_sprite(buffer, sprite2, SCREEN_W * 6 / 8 - 75, SCREEN_H / 4, 180, 240);
                 stretch_sprite(buffer, sprite1, SCREEN_W / 4 - 75, SCREEN_H / 4, 150, 200);
                 if (mouse_b == 1) {
-                    tabJoueur[i].sprite = sprite2;
-                    nomJoueur(tabJoueur[i].name,buffer,i);
+                    tabJoueur[iter].sprite = sprite2;
+                    nomJoueur(tabJoueur[iter].name,buffer,iter);
                     rest(500);
-                    i++;
+                    iter++;
 
                 }
             } else {
@@ -136,7 +160,8 @@ int menu_map(joueur *tabJoueur) {
             show_mouse(buffer);
             blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
             clear(buffer);
-        }
+        }//Fin choix du perso
+
         //porte memory
         stretch_sprite(buffer,porte,29*16-10,9*16,3*16,4*16);
         //rectfill(buffer, 29*16, 11*16, 31*16, 13*16, makecol(155, 0, 250));
@@ -148,10 +173,12 @@ int menu_map(joueur *tabJoueur) {
         //porte tir aux ballons
         //rectfill(buffer, 47*16-5, 15*16, 47*16+43, 16*16+32, makecol(155, 0, 250));
 
-        //affichage des joueurs en fonction de leur position
+
+        /// Affichage des joueurs en fonction de leur position
         stretch_sprite(buffer, tabJoueur[0].sprite, tabJoueur[0].x, tabJoueur[0].y, 30, 40);
         stretch_sprite(buffer, tabJoueur[1].sprite, tabJoueur[1].x, tabJoueur[1].y, 30, 40);
 
+        ///GESTION DES TOUCHES
         if (key[KEY_UP] && tabJoueur[1].y > 0) {
             tabJoueur[1].y = tabJoueur[1].y - 10;
             rest(50);
@@ -184,68 +211,45 @@ int menu_map(joueur *tabJoueur) {
             tabJoueur[0].x = tabJoueur[0].x + 10;
             rest(50);
         }
-        if(tabJoueur[0].x>=30*16-30 &&tabJoueur[0].x<=32*16+5 && tabJoueur[0].y>=28*16-5 &&tabJoueur[0].y<=30*16 && peche==0 ){
-            rest(300);
-            tabJoueur[0].tickets--;
-            tabJoueur[1].tickets--;
-            jeu_canards(buffer,tabJoueur);
-            peche=1;
+        ///################# LANCEMENT DES MINI-JEUX ####################
+        for(int i=0; i<2; i++) { //canards
+            if (tabJoueur[i].x >= 30*16-30 &&tabJoueur[i].x <=32*16+5 &&tabJoueur[i].y>=28*16-5 &&tabJoueur[i].y<=30*16){
+                rest(100);
+                tabJoueur[i].tickets--;
+                jeu_canards(buffer, tabJoueur);
+                tabJoueur[i].x =(38 +i*2)*16; tabJoueur[i].y =37*16; //Réinitialisation de la position des joueurs
+            }
         }
-        if(tabJoueur[1].x>=30*16-10 &&tabJoueur[1].x<=32*16+5 && tabJoueur[1].y>=28*16-20 &&tabJoueur[1].y<=30*16 && peche==0 ){
-            rest(300);
-            tabJoueur[0].tickets--;
-            tabJoueur[1].tickets--;
-            jeu_canards(buffer,tabJoueur);
-            peche=1;
+        for(int i=0; i<2; i++) { //memory
+            if (tabJoueur[i].x >= 29*16 &&tabJoueur[i].x <=29*16+32 &&tabJoueur[i].y >=11*16 &&tabJoueur[i].y <=13*16){
+                rest(100);
+                tabJoueur[i].tickets--;
+                jeuMemory(buffer, tabJoueur);
+                tabJoueur[i].x =(38 +i*2)*16; tabJoueur[i].y =37*16; //Réinitialisation de la position des joueurs
+            }
         }
-        if(tabJoueur[0].x>=29*16 &&tabJoueur[0].x<=29*16+32 && tabJoueur[0].y>=11*16 &&tabJoueur[0].y<=13*16 && memory==0){
-            rest(100);
-            tabJoueur[0].tickets--;
-            tabJoueur[1].tickets--;
-            jeuMemory(buffer, tabJoueur);
-            memory=1;
+        for(int i=0; i<2; i++) { //crossy road
+            if (tabJoueur[i].x >=9*16-10 &&tabJoueur[i].x <=11*16 &&tabJoueur[i].y >=16*16 &&tabJoueur[i].y <=18*16) {
+                rest(100);
+                tabJoueur[i].tickets--;
+                crossy_road(tabJoueur);
+                tabJoueur[i].x = (38 + i * 2) * 16; tabJoueur[i].y = 37 * 16; //Réinitialisation de la position des joueurs
+            }
         }
-        if(tabJoueur[1].x>=29*16-20 &&tabJoueur[1].x<=29*16+32 && tabJoueur[1].y>=11*16 &&tabJoueur[1].y<=13*16 && memory==0){
-            rest(100);
-            tabJoueur[0].tickets--;
-            tabJoueur[1].tickets--;
-            jeuMemory(buffer, tabJoueur);
-            memory=1;
+        for(int i=0; i<2; i++) { //tir aux ballons
+            if(tabJoueur[i].x>=47*16-5 &&tabJoueur[i].x<=47*16+43 && tabJoueur[i].y>=15*16 &&tabJoueur[i].y<=16*16+32) {
+                rest(100);
+                tabJoueur[i].tickets--;
+                tir_aux_ballons();
+                tabJoueur[i].x = (38 + i * 2) * 16; tabJoueur[i].y = 37 * 16; //Réinitialisation de la position des joueurs
+            }
         }
-        if(tabJoueur[0].x>=9*16-10 &&tabJoueur[0].x<=11*16 && tabJoueur[0].y>=16*16 &&tabJoueur[0].y<=18*16 && crossyRoad==0){
-            rest(100);
-            tabJoueur[0].tickets--;
-            tabJoueur[1].tickets--;
-            crossy_road(tabJoueur);
-            crossyRoad=1;
-        }
-        if(tabJoueur[1].x>=9*16-10 &&tabJoueur[1].x<=11*16 && tabJoueur[1].y>=16*16 &&tabJoueur[1].y<=18*16 && crossyRoad==0){
-            rest(100);
-            tabJoueur[0].tickets--;
-            tabJoueur[1].tickets--;
-            crossy_road(tabJoueur);
-            crossyRoad=1;
-        }
-        if(tabJoueur[0].x>=47*16-5 &&tabJoueur[0].x<=47*16+43 && tabJoueur[0].y>=15*16 &&tabJoueur[0].y<=16*16+32 && tirBallons==0){
-            rest(100);
-            tabJoueur[0].tickets--;
-            tabJoueur[1].tickets--;
-            tir_aux_ballons();
-            tirBallons=1;
-        }
-        if(tabJoueur[1].x>=47*16-5 &&tabJoueur[1].x<=47*16+43 && tabJoueur[1].y>=15*16 &&tabJoueur[1].y<=16*16+32 && tirBallons==0){
-            rest(100);
-            tabJoueur[0].tickets--;
-            tabJoueur[1].tickets--;
-            tir_aux_ballons();
-            tirBallons=1;
-        }
-        if(tabJoueur[0].x>=38*16-10 &&tabJoueur[0].x<=42*16+5 && tabJoueur[0].y>=38*16){
-            ecran_score(buffer);
-        }
-        if(tabJoueur[1].x>=38*16-10 &&tabJoueur[1].x<=42*16+5 && tabJoueur[1].y>=38*16){
-            ecran_score(buffer);
-            return 0;
+
+        ///################# AFFICHAGE DES SCORES ####################
+        for(int i=0; i<2; i++){
+            if(tabJoueur[i].x>=38*16-10 &&tabJoueur[i].x<=42*16+5 && tabJoueur[i].y>=38*16){
+                ecran_score(buffer, tabJoueur);
+            }
         }
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(buffer);

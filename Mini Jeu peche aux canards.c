@@ -78,7 +78,7 @@ int partie(BITMAP *buffer, t_canard tabCanard[10]){
     plouf= load_sample("plouf.wav");
     fall= load_sample("fall.wav");
     win= load_sample("win.wav");
-    while (done == 0&& clock()-start<=60000) {
+    while (done == 0 && clock()-start<=60000){
         draw_sprite(buffer,fond,0,0);
         textprintf_ex(buffer,font,0,0, makecol(255,255,255),0,"temps : %.2f s",(clock()-start)/1000);
         if (key[KEY_ESC]) {
