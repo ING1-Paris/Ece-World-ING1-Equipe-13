@@ -15,13 +15,6 @@ typedef struct {
     BITMAP* image;
 }Ballon;
 
-typedef struct joueur{
-    int numJoueur;
-    char nomJoueur[15];
-    long temps;
-}Joueur;
-
-
 int collide_point_cercle(int point_x, int point_y, int cercle_x, int cercle_y, int rayon);
 int determinerGagnant(long tempsJoueur1, long tempsJoueur2);
 int partie_tb(BITMAP *buffer, long *tempsJoueur1, long *tempsJoueur2,int joueur);
@@ -154,7 +147,6 @@ int determinerGagnant(long tempsJoueur1, long tempsJoueur2){
 void tir_aux_ballons(){
     srand(time(NULL));
     BITMAP * buffer= create_bitmap(SCREEN_W,SCREEN_H);
-    Joueur joueurs[1];
     int joueur = 1;
     partie_tb(buffer, &tempsJoueur1, &tempsJoueur2, joueur);
     joueur=2;
