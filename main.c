@@ -33,9 +33,22 @@ int main(void) {
 }
 
 END_OF_MAIN()
-void ecran_score(BITMAP *buffer){
-    while(!key[KEY_SPACE]){
+void ecran_score(BITMAP *buffer, joueur tabJoueurs[]){
+    clear(screen);
+    clear(buffer);
+    while(!key[KEY_ESC]){
         textprintf_ex(buffer,font,largeur/2 - text_length(font,"ECRAN SCORE"),hauteur/8,makecol(255,255,255), makecol(0,0,0),"ECRAN SCORE");
+        textprintf_ex(buffer,font,100,hauteur/4,makecol(255,255,255), makecol(0,0,0),"%s a %d tickets.",tabJoueurs[0].name,tabJoueurs[0].tickets);
+        textprintf_ex(buffer,font,100,hauteur/4+20,makecol(255,255,255), makecol(0,0,0),"%s a %d tickets.",tabJoueurs[1].name,tabJoueurs[1].tickets);
+        if(tabJoueurs[0].tickets>tabJoueurs[1].tickets){
+            textprintf_ex(buffer,font,100,hauteur/4-40,makecol(255,255,255), makecol(0,0,0),"%s a gagné !!!.",tabJoueurs[0].name);
+        }
+        if(tabJoueurs[1].tickets>tabJoueurs[0].tickets){
+            textprintf_ex(buffer,font,100,hauteur/4-40,makecol(255,255,255), makecol(0,0,0),"%s a gagné !!!.",tabJoueurs[1].name);
+        }
+        if(tabJoueurs[0].tickets==tabJoueurs[1].tickets){
+            textprintf_ex(buffer,font,100,hauteur/4-40,makecol(255,255,255), makecol(0,0,0),"Vous avez le même nombre de tickets !!!.");
+        }
         blit(buffer, screen, 0, 0, 0, 0, largeur, hauteur);
     }
 }
@@ -239,10 +252,11 @@ int menu_map(joueur *tabJoueur) {
             tirBallons=1;
         }
         if(tabJoueur[0].x>=38*16-10 &&tabJoueur[0].x<=42*16+5 && tabJoueur[0].y>=38*16){
-            ecran_score(buffer);
+            ecran_score(buffer,tabJoueur);
+            return 0;
         }
         if(tabJoueur[1].x>=38*16-10 &&tabJoueur[1].x<=42*16+5 && tabJoueur[1].y>=38*16){
-            ecran_score(buffer);
+            ecran_score(buffer,tabJoueur);
             return 0;
         }
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);

@@ -34,7 +34,7 @@ typedef struct JaimeLesTonks{
 
 ///PROTOTYPES
 void joueurSuivant(int *JoueurEnCours, t_joueur tabJoueur[2], int decalage, int surTronc, t_tronc tabTronc[NBR_RONDIN]);
-int finPartie(t_joueur tabJoueur[2], BITMAP *perso[2]);
+int finParti(t_joueur tabJoueur[2], BITMAP *perso[2]);
 
 
 void crossy_road(){
@@ -387,7 +387,7 @@ void crossy_road(){
 
             while (!key[KEY_ENTER]) { rest(10); }
             //Si le joueur 2 perd, fin de la partie
-            if(JoueurEnCours == 1) { finDePartie =finPartie(tabJoueur, perso); }
+            if(JoueurEnCours == 1) { finDePartie =finParti(tabJoueur, perso); }
             else{
                 clear_bitmap(screen);
                 clear_bitmap(buffer);
@@ -406,7 +406,7 @@ void crossy_road(){
             while (!key[KEY_ENTER]) { rest(10); }
             //Fin de partie si le 2e joueur a fini
             if(JoueurEnCours ==1) {
-                finDePartie =finPartie(tabJoueur, perso);}
+                finDePartie =finParti(tabJoueur, perso);}
             //Reset des bitmaps et des positions
             else {
                 clear_bitmap(screen);
@@ -451,7 +451,7 @@ void joueurSuivant(int *JoueurEnCours, t_joueur tabJoueur[2], int decalage, int 
             tabTronc[i].troncX2 = tabTronc[i].troncX +300;}
 }
 
-int finPartie(t_joueur tabJoueur[2], BITMAP *perso[2]){
+int finParti(t_joueur tabJoueur[2], BITMAP *perso[2]){
     clear_to_color(screen, makecol(0, 0, 60));
 
     BITMAP *coupe = load_bitmap("CR_Coupe.bmp", NULL);
