@@ -37,7 +37,7 @@ void joueurSuivant(int *JoueurEnCours, t_joueur tabJoueur[2], int decalage, int 
 int finPartie(t_joueur tabJoueur[2], BITMAP *perso[2]);
 
 
-void crossy_road(){
+void crossy_road(joueur *tabJoueurs){
 
     ///Délai pour éviter superposition des touches
     for(int i=0; i<200; i++){
@@ -60,6 +60,7 @@ void crossy_road(){
     BITMAP *gameover =load_bitmap("CR_GameOver.bmp",NULL);
     BITMAP *victoire =load_bitmap("CR_Victoire.bmp",NULL);
     BITMAP *tonk = load_bitmap("CR_Tonk.bmp", NULL);
+    BITMAP *buisson = load_bitmap("CR_Buisson.bmp", NULL);
 
     BITMAP *perso[2];
     perso[0]= load_bitmap("CR_Perso1.bmp", NULL);
@@ -87,12 +88,12 @@ void crossy_road(){
     BITMAP* coin_sheet = load_bitmap("CR_Piece.bmp", NULL);
     int coin_width = 54, coin_height = 51, coin_x = 0, coin_y = 0;
     int coin_index = 0;
-    BITMAP** pieces[6];
+    BITMAP* pieces[6];
     while (coin_y < coin_sheet->h){
         BITMAP* sprite = create_bitmap(coin_width, coin_height); // Création d'un nouveau bitmap pour stocker le sprite
         blit(coin_sheet, sprite, coin_x, coin_y, 0, 0, coin_width, coin_height); // Copie du sprite à partir de la sprite sheet
 
-        pieces[coin_index] = &sprite; // Stockage du bitmap du sprite dans le tableau
+        pieces[coin_index] = sprite; // Stockage du bitmap du sprite dans le tableau
         coin_x += coin_width; // Déplacement des coordonnées pour passer au sprite suivant
 
         if (coin_x >= coin_sheet->w){
@@ -104,6 +105,7 @@ void crossy_road(){
     int decalage =500;
     BITMAP *buffer; //Double buffer
     buffer =create_bitmap(largeur, hauteur + decalage);
+    BITMAP *fondBuisson; fondBuisson =create_bitmap(largeur, hauteur + decalage);
     clear_bitmap(buffer);
 
     //██╗   ██╗ █████╗ ██████╗ ██╗ █████╗ ██████╗ ██╗     ███████╗███████╗
@@ -151,10 +153,16 @@ void crossy_road(){
         tabTonk[i+3].tonkX =170;
         tabTonk[i+3].tonkY = hauteur + decalage - 700 + 50 * i;}
 
+    //Pieces
+    int iterPieces =0;
+    int attente =0;
+    int piecesX =300;
+
 
     //Temps
     double tempsPasse = 0;
     double intervalle = 0.008; //Intervalle en secondes
+    double tempsMoins =0;
 
     //Joueur
     t_joueur tabJoueur[2];
@@ -167,8 +175,19 @@ void crossy_road(){
 
     //Terrain
     int modifTerrain =0, boucle =0;
+    int tamponX, tamponY;
 
     int defaite =0; int finDePartie =0;
+
+    // ██████╗ ██████╗ ███████╗      ███╗   ███╗███████╗███╗   ██╗██╗   ██╗
+    // ██╔══██╗██╔══██╗██╔════╝      ████╗ ████║██╔════╝████╗  ██║██║   ██║
+    // ██████╔╝██████╔╝█████╗ █████╗ ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║
+    // ██╔═══╝ ██╔══██╗██╔══╝ ╚════╝ ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
+    // ██║     ██║  ██║███████╗      ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
+    // ╚═╝     ╚═╝  ╚═╝╚══════╝      ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝
+
+
+
 
 // ██████╗  ██████╗ ██╗   ██╗ ██████╗██╗     ███████╗    ██████╗ ██████╗ ██╗███╗   ██╗ ██████╗██╗██████╗  █████╗ ██╗     ███████╗
 // ██╔══██╗██╔═══██╗██║   ██║██╔════╝██║     ██╔════╝    ██╔══██╗██╔══██╗██║████╗  ██║██╔════╝██║██╔══██╗██╔══██╗██║     ██╔════╝
@@ -176,9 +195,10 @@ void crossy_road(){
 // ██╔══██╗██║   ██║██║   ██║██║     ██║     ██╔══╝      ██╔═══╝ ██╔══██╗██║██║╚██╗██║██║     ██║██╔═══╝ ██╔══██║██║     ██╔══╝
 // ██████╔╝╚██████╔╝╚██████╔╝╚██████╗███████╗███████╗    ██║     ██║  ██║██║██║ ╚████║╚██████╗██║██║     ██║  ██║███████╗███████╗
 // ╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝╚══════╝╚══════╝    ╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝
-    while (finDePartie ==0){
+    //while (finDePartie ==0){
+        while (!key[KEY_ESC]){
         clock_t start_time = clock();
-
+        tamponX = tabJoueur[JoueurEnCours].posX; tamponY = tabJoueur[JoueurEnCours].posY;
 
         ///GESTION TOUCHES
         if(keypressed()){
@@ -190,11 +210,9 @@ void crossy_road(){
             if(scancode ==KEY_UP){ //HAUT
                 tabJoueur[JoueurEnCours].posY-= 50;}
             if(scancode ==KEY_LEFT){ //GAUCHE
-                tabJoueur[JoueurEnCours].posX-= 50;
-                tabJoueur[JoueurEnCours].sens =1;}
+                tabJoueur[JoueurEnCours].posX-= 50;}
             if(scancode ==KEY_RIGHT){ //DROITE
-                tabJoueur[JoueurEnCours].posX+= 50;
-                tabJoueur[JoueurEnCours].sens =2;}
+                tabJoueur[JoueurEnCours].posX+= 50;}
             rest(5);
         }
 
@@ -236,6 +254,14 @@ void crossy_road(){
 
             ///Deplacement Troncs Fond de map
             TroncFondMap[0].troncX +=3; TroncFondMap[1].troncX -=3;
+
+            ///Pieces
+            attente++;
+            if(attente >=4){
+                attente =0;
+                iterPieces++;}
+            if(iterPieces == 6){
+                iterPieces =0;}
         }
 
 
@@ -334,6 +360,28 @@ void crossy_road(){
             else{surTroncFondMap =0;}
         }
 
+        ///############### BUISSONS ###############
+        draw_sprite(buffer, buisson, 350, hauteur+decalage -150); //Première rangée
+        draw_sprite(buffer, buisson, 350, hauteur+decalage -100);
+        draw_sprite(buffer, buisson, 450, hauteur+decalage -100); //Deuxième rangée
+        draw_sprite(buffer, buisson, 450, hauteur+decalage -50);
+        //Collision buisson
+        if(tabJoueur[JoueurEnCours].posY == hauteur+decalage -100 || tabJoueur[JoueurEnCours].posY == hauteur+decalage -150){
+            if(tabJoueur[JoueurEnCours].posX >= 350 && tabJoueur[JoueurEnCours].posX < 400){
+                tabJoueur[JoueurEnCours].posX =tamponX; tabJoueur[JoueurEnCours].posY =tamponY;}}
+        if(tabJoueur[JoueurEnCours].posY == hauteur+decalage -100 || tabJoueur[JoueurEnCours].posY == hauteur+decalage -50){
+            if(tabJoueur[JoueurEnCours].posX >= 450 && tabJoueur[JoueurEnCours].posX < 500){
+                tabJoueur[JoueurEnCours].posX =tamponX; tabJoueur[JoueurEnCours].posY =tamponY;}}
+
+        ///############### PIECES ###############
+            draw_sprite(buffer, pieces[iterPieces], piecesX, hauteur+decalage -150);
+        if(tabJoueur[JoueurEnCours].posY == hauteur+decalage -150){
+            if(tabJoueur[JoueurEnCours].posX >= 300 && tabJoueur[JoueurEnCours].posX < 350) {
+                piecesX =0;
+                tempsMoins =2.0;
+            }
+        }
+
 
         ///############### AFFICHAGE DU RESTE ###############
         //Personnage
@@ -344,6 +392,10 @@ void crossy_road(){
             vline(buffer, i*50, 0, hauteur+decalage, makecol(255,255,255));}
         for(int i=0; i <23; i++){
             hline(buffer, 0, i*50, largeur, makecol(255,255,255));}*/
+
+        //Rectangle noirs pour masquer les troncs
+        rectfill(buffer, 900, 0, largeur, hauteur +decalage, makecol(0, 0, 0));
+        rectfill(buffer, 0, 0, 300, hauteur +decalage, makecol(0, 0, 0));
 
         //Buffer
             //Décalage hors écran
@@ -400,7 +452,8 @@ void crossy_road(){
             //Temps
             clock_t fin = clock(); //On recupère le temps passé par le joueur dans le jeu
             tabJoueur[JoueurEnCours].temps = (double)(fin - timeJoueur) / CLOCKS_PER_SEC; //Calcul du temps passé pour le joueur
-            printf("Temps du joueur %d : %f\n", JoueurEnCours, tabJoueur[JoueurEnCours].temps);
+            //printf("Temps du joueur %d : %f\n", JoueurEnCours, tabJoueur[JoueurEnCours].temps);
+            tabJoueur[JoueurEnCours].temps -=tempsMoins;
             draw_sprite(screen, victoire, 210, 150); //On affiche la victoire
 
             while (!key[KEY_ENTER]) { rest(10); }
@@ -418,14 +471,16 @@ void crossy_road(){
             }
         }
     } ///FIN DU MINI JEU ---- DESTRUCTION DES BITMAPS
-    /*destroy_bitmap(buffer);
+    destroy_bitmap(buffer);
     destroy_bitmap(perso[0]);
     destroy_bitmap(perso[1]);
     destroy_bitmap(gameover);
     destroy_bitmap(victoire);
-    destroy_bitmap(tronc);
     destroy_bitmap(tonk);
-    destroy_bitmap(pieces);*/
+    for(int i=0; i <3; i++){
+        destroy_bitmap(tronc[i]);}
+    for(int i=0; i <6; i++){
+        destroy_bitmap(pieces[i]);}
 
     ///ON ENREGISTRE LES TICKETS
 }

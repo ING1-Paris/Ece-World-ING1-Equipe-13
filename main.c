@@ -24,16 +24,18 @@ int main(void) {
      * suivant.
      * Enfin il faut s'occuper de la victoire et quitter allegro (ça vide la mémoire automatiquement). */
 
-    //menu();
-
     joueur tabJoueur[2];
     menu_map(tabJoueur);
+
     allegro_exit();
     return 0;
 }
 
 END_OF_MAIN()
 void ecran_score(BITMAP *buffer){
+    clear(buffer);
+    clear(screen);
+    BITMAP *scores =load_bitmap("SCORES.bmp",NULL);
     while(!key[KEY_SPACE]){
         textprintf_ex(buffer,font,largeur/2 - text_length(font,"ECRAN SCORE"),hauteur/8,makecol(255,255,255), makecol(0,0,0),"ECRAN SCORE");
         blit(buffer, screen, 0, 0, 0, 0, largeur, hauteur);
@@ -214,14 +216,14 @@ int menu_map(joueur *tabJoueur) {
             rest(100);
             tabJoueur[0].tickets--;
             tabJoueur[1].tickets--;
-            crossy_road();
+            crossy_road(tabJoueur);
             crossyRoad=1;
         }
         if(tabJoueur[1].x>=9*16-10 &&tabJoueur[1].x<=11*16 && tabJoueur[1].y>=16*16 &&tabJoueur[1].y<=18*16 && crossyRoad==0){
             rest(100);
             tabJoueur[0].tickets--;
             tabJoueur[1].tickets--;
-            crossy_road();
+            crossy_road(tabJoueur);
             crossyRoad=1;
         }
         if(tabJoueur[0].x>=47*16-5 &&tabJoueur[0].x<=47*16+43 && tabJoueur[0].y>=15*16 &&tabJoueur[0].y<=16*16+32 && tirBallons==0){

@@ -1,0 +1,4 @@
+ToolSet: w64 6.0 (local)@C:\Users\comeb\Documents\Autres Logiciels\CodeBlocks\MinGW
+Options: 
+
+Options:-DCMAKE_MAKE_PROGRAM=C:/Users/comeb/Documents/Autres Logiciels/CLion 2022.2.3/bin/ninja/win/ninja.exe
