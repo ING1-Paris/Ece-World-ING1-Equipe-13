@@ -96,7 +96,7 @@ long partieMemory(BITMAP* buffer) {
                 cartePiochee2 = -1;
             }
         }
-        textprintf_ex(buffer, font, 0, 0, makecol(255, 255, 255), 0, "temps: %ld", temps);
+        textprintf_ex(buffer, font, 0, 0, makecol(255, 255, 255), 0, "temps : %.2f s",temps/1000);
         textprintf_ex(buffer, font, 0, 20, makecol(255, 255, 255), 0, "score: %d", score);
         show_mouse(buffer);
         blit(buffer, screen, 0, 0, 0, 0, LONG, LARG);

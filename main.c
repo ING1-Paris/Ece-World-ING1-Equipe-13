@@ -178,7 +178,17 @@ int menu_map(joueur *tabJoueur) {
             jeu_canards(buffer,tabJoueur);
             peche=1;
         }
+        if(tabJoueur[1].x>=30*16-10 &&tabJoueur[1].x<=32*16+5 && tabJoueur[1].y>=28*16-5 &&tabJoueur[1].y<=30*16 && peche==0 ){
+            rest(300);
+            jeu_canards(buffer,tabJoueur);
+            peche=1;
+        }
         if(tabJoueur[0].x>=29*16 &&tabJoueur[0].x<=29*16+32 && tabJoueur[0].y>=11*16 &&tabJoueur[0].y<=13*16 && memory==0){
+            rest(100);
+            jeuMemory(buffer, tabJoueur);
+            memory=1;
+        }
+        if(tabJoueur[1].x>=29*16 &&tabJoueur[1].x<=29*16+32 && tabJoueur[1].y>=11*16 &&tabJoueur[1].y<=13*16 && memory==0){
             rest(100);
             jeuMemory(buffer, tabJoueur);
             memory=1;
@@ -188,7 +198,17 @@ int menu_map(joueur *tabJoueur) {
             crossy_road();
             crossyRoad=1;
         }
+        if(tabJoueur[1].x>=9*16-10 &&tabJoueur[1].x<=11*16 && tabJoueur[1].y>=16*16 &&tabJoueur[1].y<=18*16 && crossyRoad==0){
+            rest(100);
+            crossy_road();
+            crossyRoad=1;
+        }
         if(tabJoueur[0].x>=47*16-5 &&tabJoueur[0].x<=47*16+43 && tabJoueur[0].y>=15*16 &&tabJoueur[0].y<=16*16+32 && tirBallons==0){
+            rest(100);
+            tir_aux_ballons();
+            tirBallons=1;
+        }
+        if(tabJoueur[1].x>=47*16-5 &&tabJoueur[1].x<=47*16+43 && tabJoueur[1].y>=15*16 &&tabJoueur[1].y<=16*16+32 && tirBallons==0){
             rest(100);
             tir_aux_ballons();
             tirBallons=1;
