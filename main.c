@@ -173,12 +173,12 @@ int menu_map(joueur *tabJoueur) {
             tabJoueur[0].x = tabJoueur[0].x + 10;
             rest(50);
         }
-        if(tabJoueur[0].x>=30*16-10 &&tabJoueur[0].x<=32*16+5 && tabJoueur[0].y>=28*16-5 &&tabJoueur[0].y<=30*16 && peche==0 ){
+        if(tabJoueur[0].x>=30*16-30 &&tabJoueur[0].x<=32*16+5 && tabJoueur[0].y>=28*16-5 &&tabJoueur[0].y<=30*16 && peche==0 ){
             rest(300);
             jeu_canards(buffer,tabJoueur);
             peche=1;
         }
-        if(tabJoueur[1].x>=30*16-10 &&tabJoueur[1].x<=32*16+5 && tabJoueur[1].y>=28*16-5 &&tabJoueur[1].y<=30*16 && peche==0 ){
+        if(tabJoueur[1].x>=30*16-10 &&tabJoueur[1].x<=32*16+5 && tabJoueur[1].y>=28*16-20 &&tabJoueur[1].y<=30*16 && peche==0 ){
             rest(300);
             jeu_canards(buffer,tabJoueur);
             peche=1;
