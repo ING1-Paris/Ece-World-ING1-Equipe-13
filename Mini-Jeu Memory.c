@@ -96,41 +96,49 @@ long partieMemory(BITMAP* buffer) {
                 cartePiochee2 = -1;
             }
         }
-        textprintf_ex(buffer, font, 0, 0, makecol(255, 255, 255), 0, "temps: %ld", temps);
-        textprintf_ex(buffer, font, 0, 20, makecol(255, 255, 255), 0, "score: %d", score);
+        textprintf_ex(buffer, font, 0, 0, makecol(255, 255, 255), 0, "temps : %.2ld s",temps/1000);
+        textprintf_ex(buffer, font, 0, 20, makecol(255, 255, 255), 0, "score: %d /24", score);
         show_mouse(buffer);
-        blit(buffer, screen, 0, 0, 0, 0, LONG, LARG);
+        blit(buffer, screen, 0, 0, 0, 0, largeur, hauteur);
         clear(buffer);
     }
          return temps;
 }
 
 int jeuMemory( BITMAP *buffer, joueur *tabJoueurs) {
-    long temps1 = partieMemory(buffer);
+    BITMAP *ticket= load_bitmap("ticket.bmp",NULL);
+    long temps1 /*= partieMemory(buffer)*/;
     tabJoueurs[0].performance_memory=temps1;
     clear(screen);
     while(!key[KEY_SPACE]){
-        textprintf_ex(screen,font,LONG/2,LARG/2,makecol(255,255,255),0,"%s a fait un temps de %ld",tabJoueurs[0].name,temps1/1000);
-        textprintf_ex(screen,font,LONG/2,LARG/2+20,makecol(255,255,255),0,"C'est au tour de %s. Tapez Espace pour commencer",tabJoueurs[1].name);
+        textprintf_ex(screen, font, largeur / 2, hauteur / 2, makecol(255, 255, 255), 0, "%s a fait un temps de %ld", tabJoueurs[0].name, temps1 / 1000);
+        textprintf_ex(screen, font, largeur / 2, hauteur / 2 + 20, makecol(255, 255, 255), 0, "C'est au tour de %s. Tapez Espace pour commencer", tabJoueurs[1].name);
 
     }
-    long temps2= partieMemory(buffer);
+    long temps2/*= partieMemory(buffer)*/;
     tabJoueurs[1].performance_memory=temps2;
-    textprintf_ex(screen,font,LONG/2,LARG/2,makecol(255,255,255),0,"%s a fait un temps de %ld",tabJoueurs[1].name,temps2/1000);
+    clear(screen);
+    textprintf_ex(screen, font, largeur / 2, hauteur / 2, makecol(255, 255, 255), 0, "%s a fait un temps de %ld", tabJoueurs[1].name, temps2 / 1000);
     rest(2000);
+    clear(screen);
     if (temps2 >temps1){
-        textprintf_ex(screen,font,0,0,makecol(255,255,255), makecol(0,0,0),"%s a gagné !",tabJoueurs[0].name);
+        textprintf_ex(screen,font,largeur/2,hauteur/2,makecol(255,255,255), makecol(0,0,0),"%s a gagné !",tabJoueurs[0].name);
+        stretch_sprite(screen,ticket,largeur/4,2*hauteur/2,largeur/2,(largeur/2)*280/390);
+
         tabJoueurs[0].tickets++;
-        rest(2000);
+        rest(3000);
     }
     if (temps2 == temps1){
-        textprintf_ex(screen,font,0,0,makecol(255,255,255), makecol(0,0,0),"Match nul !");
-        rest(2000);
+        textprintf_ex(screen,font,largeur/2-20,hauteur/2-50,makecol(255,255,255), makecol(0,0,0),"Match nul !");
+        stretch_sprite(screen,ticket,largeur/4,hauteur/2-50,largeur/2,(largeur/2)*280/390);
+
+        rest(3000);
     }
     if (temps2 <temps1){
-        textprintf_ex(screen,font,0,0,makecol(255,255,255), makecol(0,0,0),"%s a gagné !",tabJoueurs[1].name);
+        textprintf_ex(screen,font,largeur/2-20,hauteur/2-50,makecol(255,255,255), makecol(0,0,0),"%s a gagné !",tabJoueurs[1].name);
+        stretch_sprite(screen,ticket,largeur/4,2*hauteur/2-50,largeur/2,(largeur/2)*280/390);
         tabJoueurs[1].tickets++;
-        rest(2000);
+        rest(3000);
     }
 
     return 0;

@@ -5,8 +5,8 @@
 #define PROJET_HEADER_H
 
 /// ~~~~~~~~~~~~~~ Define ~~~~~~~~~~~~~~
-#define LONG 1200
-#define LARG 650
+#define largeur 1200
+#define hauteur 650
 #define NB_JOUEUR 2
 
 
