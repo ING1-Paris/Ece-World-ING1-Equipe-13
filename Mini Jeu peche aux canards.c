@@ -173,6 +173,7 @@ void jeu(BITMAP *buffer, joueur *tabJoueurs){
         tabJoueurs[1].tickets++;
         rest(3000);
     }
+    tabJoueurs[0].performance_Canards =score1; tabJoueurs[1].performance_Canards =score2;
 }
 void regles(BITMAP *buffer){
     while(!key[KEY_ESC]){
