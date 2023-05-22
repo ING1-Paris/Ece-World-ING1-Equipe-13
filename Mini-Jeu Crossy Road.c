@@ -34,10 +34,10 @@ typedef struct JaimeLesTonks{
 
 ///PROTOTYPES
 void joueurSuivant(int *JoueurEnCours, t_joueur tableauJoueur[2], int decalage, int surTronc, t_tronc tabTronc[NBR_RONDIN]);
-int finPartie(t_joueur tableauJoueur[2], BITMAP *perso[2]);
+int finPartie(t_joueur tableauJoueur[2], BITMAP *perso[2], joueur *tabJoueurs);
 
 
-void crossy_road(joueur *tableauJoueurs){
+void crossy_road(joueur *tabJoueur){
 
     ///Délai pour éviter superposition des touches
     for(int i=0; i<200; i++){
@@ -156,8 +156,9 @@ void crossy_road(joueur *tableauJoueurs){
     //Pieces
     int iterPieces =0;
     int attente =0;
-    int piecesX =300;
-
+    int piecesX =300; int pieces2X =850;
+    int nbPieces =0;
+    int ATTRAPE =0;
 
     //Temps
     double tempsPasse = 0;
@@ -195,8 +196,7 @@ void crossy_road(joueur *tableauJoueurs){
 // ██╔══██╗██║   ██║██║   ██║██║     ██║     ██╔══╝      ██╔═══╝ ██╔══██╗██║██║╚██╗██║██║     ██║██╔═══╝ ██╔══██║██║     ██╔══╝
 // ██████╔╝╚██████╔╝╚██████╔╝╚██████╗███████╗███████╗    ██║     ██║  ██║██║██║ ╚████║╚██████╗██║██║     ██║  ██║███████╗███████╗
 // ╚═════╝  ╚═════╝  ╚═════╝  ╚═════╝╚══════╝╚══════╝    ╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝╚═╝     ╚═╝  ╚═╝╚══════╝╚══════╝
-    //while (finDePartie ==0){
-        while (!key[KEY_ESC]){
+    while (finDePartie ==0){
         clock_t start_time = clock();
         tamponX = tableauJoueur[JoueurEnCours].posX; tamponY = tableauJoueur[JoueurEnCours].posY;
 
@@ -365,7 +365,6 @@ void crossy_road(joueur *tableauJoueurs){
         draw_sprite(buffer, buisson, 350, hauteur+decalage -100);
         draw_sprite(buffer, buisson, 450, hauteur+decalage -100); //Deuxième rangée
         draw_sprite(buffer, buisson, 450, hauteur+decalage -50);
-        //Collision buisson
         if(tableauJoueur[JoueurEnCours].posY == hauteur+decalage -100 || tableauJoueur[JoueurEnCours].posY == hauteur+decalage -150){
             if(tableauJoueur[JoueurEnCours].posX >= 350 && tableauJoueur[JoueurEnCours].posX < 400){
                 tableauJoueur[JoueurEnCours].posX =tamponX; tableauJoueur[JoueurEnCours].posY =tamponY;}}
@@ -373,13 +372,40 @@ void crossy_road(joueur *tableauJoueurs){
             if(tableauJoueur[JoueurEnCours].posX >= 450 && tableauJoueur[JoueurEnCours].posX < 500){
                 tableauJoueur[JoueurEnCours].posX =tamponX; tableauJoueur[JoueurEnCours].posY =tamponY;}}
 
-        ///############### PIECES ###############
-            draw_sprite(buffer, pieces[iterPieces], piecesX, hauteur+decalage -150);
-        if(tableauJoueur[JoueurEnCours].posY == hauteur+decalage -150){
-            if(tableauJoueur[JoueurEnCours].posX >= 300 && tableauJoueur[JoueurEnCours].posX < 350) {
-                piecesX =0;
-                tempsMoins =2.0;
+        draw_sprite(buffer, buisson, 800, 400); //2e zone
+        draw_sprite(buffer, buisson, 850, 350);
+        if(tableauJoueur[JoueurEnCours].posY == 400){
+            if(tableauJoueur[JoueurEnCours].posX >= 800 && tableauJoueur[JoueurEnCours].posX < 850){
+                tableauJoueur[JoueurEnCours].posX =tamponX; tableauJoueur[JoueurEnCours].posY =tamponY;}}
+        if(tableauJoueur[JoueurEnCours].posY == 350){
+            if(tableauJoueur[JoueurEnCours].posX >= 850 && tableauJoueur[JoueurEnCours].posX < 900){
+                tableauJoueur[JoueurEnCours].posX =tamponX; tableauJoueur[JoueurEnCours].posY =tamponY;}}
+
+        //3e zone autoroute
+        int decalageX =0;
+        for(int i=0; i<2; i++){
+            for(int u=0; u<2; u++){
+                if(tableauJoueur[JoueurEnCours].posY == 650){
+                    if(tableauJoueur[JoueurEnCours].posX >= 300+decalageX && tableauJoueur[JoueurEnCours].posX < 350+decalageX){
+                        tableauJoueur[JoueurEnCours].posX =tamponX; tableauJoueur[JoueurEnCours].posY =tamponY;}}
+                draw_sprite(buffer, buisson, 300 +decalageX, 650);
+                decalageX +=100;
             }
+            decalageX =450;
+        }
+
+        ///############### PIECES ###############
+        draw_sprite(buffer, pieces[iterPieces], piecesX, 1000);
+        draw_sprite(buffer, pieces[iterPieces], pieces2X, 400);
+        if(tableauJoueur[JoueurEnCours].posY == hauteur+decalage -150){
+            if(tableauJoueur[JoueurEnCours].posX >= 300 && tableauJoueur[JoueurEnCours].posX < 350 && ATTRAPE ==0) {
+                piecesX =0; nbPieces++; ATTRAPE =1;
+                tempsMoins +=2.0;}
+        }
+        if(tableauJoueur[JoueurEnCours].posY == 400){
+            if(tableauJoueur[JoueurEnCours].posX >= 850 && tableauJoueur[JoueurEnCours].posX < 900 && (ATTRAPE ==0 || ATTRAPE ==1)){
+                pieces2X =0; nbPieces++; ATTRAPE =2;
+                tempsMoins +=2.0;}
         }
 
 
@@ -396,6 +422,20 @@ void crossy_road(joueur *tableauJoueurs){
         //Rectangle noirs pour masquer les troncs
         rectfill(buffer, 900, 0, largeur, hauteur +decalage, makecol(0, 0, 0));
         rectfill(buffer, 0, 0, 300, hauteur +decalage, makecol(0, 0, 0));
+
+        //Nombre de pièces collectées
+        draw_sprite(buffer, pieces[0], 10, decalage -modifTerrain);
+        textprintf_ex(buffer, font, 70, 20 +decalage-modifTerrain, makecol(255, 255, 255), -1, ": %d", nbPieces);
+
+        //Explications pieces et buisson
+        draw_sprite(buffer, buisson, 50, 325+decalage);
+        textprintf_ex(buffer, font, 20, 350 +decalage, makecol(255, 255, 255), -1, "Les");
+        textprintf_ex(buffer, font, 20, 380 +decalage, makecol(255, 255, 255), -1, "sont des obstacles");
+
+        draw_sprite(buffer, pieces[0], 70, 475+decalage);
+        textprintf_ex(buffer, font, 20, 500 +decalage, makecol(255, 255, 255), -1, "Chaque");
+        textprintf_ex(buffer, font, 125, 500 +decalage, makecol(255, 255, 255), -1, "retire 2s");
+        textprintf_ex(buffer, font, 20, 530 +decalage, makecol(255, 255, 255), -1, "au temps final.");
 
         //Buffer
             //Décalage hors écran
@@ -430,7 +470,6 @@ void crossy_road(joueur *tableauJoueurs){
         /// ############### DEFAITE ###############
         if(defaite ==1) {
             tableauJoueur[JoueurEnCours].distance = ((LARG+decalage)-tableauJoueur[JoueurEnCours].posY)/50;
-            printf("Distance du joueur %d : %d\n", JoueurEnCours, tableauJoueur[JoueurEnCours].distance);
 
             clear_to_color(buffer, makecol(255, 255, 255));
             draw_sprite(buffer, perso[JoueurEnCours], tableauJoueur[JoueurEnCours].posX + 5, tableauJoueur[JoueurEnCours].posY);
@@ -439,27 +478,27 @@ void crossy_road(joueur *tableauJoueurs){
 
             while (!key[KEY_ENTER]) { rest(10); }
             //Si le joueur 2 perd, fin de la partie
-            if(JoueurEnCours == 1) { finDePartie =finPartie(tableauJoueur, perso); }
+            if(JoueurEnCours == 1) { finDePartie =finPartie(tableauJoueur, perso, tabJoueur); }
             else{
                 clear_bitmap(screen);
                 clear_bitmap(buffer);
                 joueurSuivant(&JoueurEnCours, tableauJoueur, decalage, surTronc, tabTronc);
                 surTroncFondMap =1;
+                piecesX =300; pieces2X =850; nbPieces =0; tempsMoins =0; ATTRAPE =0; //Reset des pieces
                 defaite =0;}
         }
         /// ############### VICTOIRE ###############
         if(tableauJoueur[JoueurEnCours].posY/50 ==0 &&(tableauJoueur[JoueurEnCours].posX >=550 && tableauJoueur[JoueurEnCours].posX <=680)){
             //Temps
-            clock_t fin = clock(); //On recupère le temps passé par le joueur dans le jeu
+            clock_t fin = clock(); //On récupère le temps passé par le joueur dans le jeu
             tableauJoueur[JoueurEnCours].temps = (double)(fin - timeJoueur) / CLOCKS_PER_SEC; //Calcul du temps passé pour le joueur
-            //printf("Temps du joueur %d : %f\n", JoueurEnCours, tableauJoueur[JoueurEnCours].temps);
             tableauJoueur[JoueurEnCours].temps -=tempsMoins;
             draw_sprite(screen, victoire, 210, 150); //On affiche la victoire
 
             while (!key[KEY_ENTER]) { rest(10); }
             //Fin de partie si le 2e joueur a fini
             if(JoueurEnCours ==1) {
-                finDePartie =finPartie(tableauJoueur, perso);}
+                finDePartie =finPartie(tableauJoueur, perso, tabJoueur);}
             //Reset des bitmaps et des positions
             else {
                 clear_bitmap(screen);
@@ -467,6 +506,7 @@ void crossy_road(joueur *tableauJoueurs){
                 joueurSuivant(&JoueurEnCours, tableauJoueur, decalage, surTronc, tabTronc);
                 surTroncFondMap = 1;
                 defaite = 0;
+                piecesX =300; pieces2X =850; nbPieces =0; tempsMoins =0; ATTRAPE =0; //Reset des pieces
                 timeJoueur = clock(); //On relance la clock pour la partie du 2e joueur
             }
         }
@@ -481,8 +521,6 @@ void crossy_road(joueur *tableauJoueurs){
         destroy_bitmap(tronc[i]);}
     for(int i=0; i <6; i++){
         destroy_bitmap(pieces[i]);}
-
-    ///ON ENREGISTRE LES TICKETS
 }
 
 void joueurSuivant(int *JoueurEnCours, t_joueur tableauJoueur[2], int decalage, int surTronc, t_tronc tabTronc[NBR_RONDIN]){
@@ -506,7 +544,9 @@ void joueurSuivant(int *JoueurEnCours, t_joueur tableauJoueur[2], int decalage, 
             tabTronc[i].troncX2 = tabTronc[i].troncX +300;}
 }
 
-int finPartie(t_joueur tableauJoueur[2], BITMAP *perso[2]){
+int finPartie(t_joueur tableauJoueur[2], BITMAP *perso[2], joueur *tabJoueurs){
+    int joueurVictorieux =0;
+
     clear_to_color(screen, makecol(0, 0, 60));
 
     BITMAP *coupe = load_bitmap("CR_Coupe.bmp", NULL);
@@ -518,28 +558,28 @@ int finPartie(t_joueur tableauJoueur[2], BITMAP *perso[2]){
         if(tableauJoueur[1].temps !=0){
             //Les deux joueurs ont fini on cherche donc le temps le plus petit
             if(tableauJoueur[0].temps > tableauJoueur[1].temps){
-                textprintf_ex(screen, font, 100, 320, makecol(255, 255, 255),-1, "VICTOIRE !");}
+                textprintf_ex(screen, font, 100, 320, makecol(255, 255, 255),-1, "VICTOIRE !"); joueurVictorieux =1;}
             else if(tableauJoueur[0].temps < tableauJoueur[1].temps){
-                textprintf_ex(screen, font, 1000, 320, makecol(255, 255, 255),-1, "VICTOIRE !");}
+                textprintf_ex(screen, font, 1000, 320, makecol(255, 255, 255),-1, "VICTOIRE !"); joueurVictorieux =2;}
             textprintf_ex(screen, font, 100, 350, makecol(255, 255, 255),-1, "Temps : %f", tableauJoueur[0].temps);
             textprintf_ex(screen, font, 1000, 350, makecol(255, 255, 255),-1, "Temps : %f", tableauJoueur[1].temps);
         }
         else{
             textprintf_ex(screen, font, 100, 320, makecol(255, 255, 255),-1, "VICTOIRE !");
-            textprintf_ex(screen, font, 100, 350, makecol(255, 255, 255),-1, "Temps : %f", tableauJoueur[0].temps);}
+            textprintf_ex(screen, font, 100, 350, makecol(255, 255, 255),-1, "Temps : %f", tableauJoueur[0].temps); joueurVictorieux =1;}
     }
     else{
         if(tableauJoueur[1].temps !=0){
             textprintf_ex(screen, font, 1000, 320, makecol(255, 255, 255),-1, "VICTOIRE !");
-            textprintf_ex(screen, font, 1000, 350, makecol(255, 255, 255),-1, "Temps : %f", tableauJoueur[0].temps);
+            textprintf_ex(screen, font, 1000, 350, makecol(255, 255, 255),-1, "Temps : %f", tableauJoueur[1].temps); joueurVictorieux =2;
         }
         else{
             if(tableauJoueur[0].distance >tableauJoueur[1].distance){
-                textprintf_ex(screen, font, 100, 320, makecol(255, 255, 255),-1, "VICTOIRE !");}
+                textprintf_ex(screen, font, 100, 320, makecol(255, 255, 255),-1, "VICTOIRE !"); joueurVictorieux =1;}
             else if(tableauJoueur[0].distance <tableauJoueur[1].distance){
-                textprintf_ex(screen, font, 1000, 320, makecol(255, 255, 255),-1, "VICTOIRE !");}
+                textprintf_ex(screen, font, 1000, 320, makecol(255, 255, 255),-1, "VICTOIRE !"); joueurVictorieux =2;}
             else{
-                textprintf_ex(screen, font, 100, 320, makecol(255, 255, 255),-1, "EGALITE !");
+                textprintf_ex(screen, font, 100, 320, makecol(255, 255, 255),-1, "EGALITE !"); joueurVictorieux =3;
                 textprintf_ex(screen, font, 1000, 320, makecol(255, 255, 255),-1, "EGALITE !");
             }
             textprintf_ex(screen, font, 100, 350, makecol(255, 255, 255),-1, "Distance : %d", tableauJoueur[0].distance);
@@ -547,6 +587,15 @@ int finPartie(t_joueur tableauJoueur[2], BITMAP *perso[2]){
         }
     }
 
+    textprintf_ex(screen, font, 520, 20, makecol(255, 255, 255),-1, "Joueur %d gagne un ticket !", joueurVictorieux);
+    textprintf_ex(screen, font, 550, 620, makecol(255, 255, 255),-1, "Press UP to exit");
+
     while (!key[KEY_UP]) { rest(50); }
+
+    //Gestion des tickets
+    tabJoueurs[joueurVictorieux-1].tickets +=1;
+    tabJoueurs[0].performance_CrossyRoad =0; tabJoueurs[1].performance_CrossyRoad = 0;
+    tabJoueurs[joueurVictorieux-1].performance_CrossyRoad = tableauJoueur[joueurVictorieux-1].temps;
+
     return 1;
 }

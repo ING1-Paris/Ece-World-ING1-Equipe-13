@@ -36,12 +36,13 @@ typedef struct Joueur {
 
     int performance_Canards;
     int performance_TirAuxBallons;
-    int performance_CrossyRoad;
+    double performance_CrossyRoad;
     int performance_Memory;
 }joueur;
 
 
 /// ~~~~~~~~~~~~~~ Prototypes ~~~~~~~~~~~~~~
+void initialisation_joueur(joueur *tabJoueur);
 int menu_map(joueur *tabJoueur);
 
 void tank_trouble();
