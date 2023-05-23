@@ -48,6 +48,7 @@ void ecran_score(BITMAP *buffer, joueur *tabJoueur){
     clear(screen);
     BITMAP *scores =load_bitmap("SCORES.bmp",NULL);
     clear_to_color(buffer,makecol(255,255,255));
+    int bestScore =0;
     while(!key[KEY_SPACE]){
         draw_sprite(buffer,scores,300,15);
         textprintf_ex(buffer, font, 350, 200, makecol(0, 0, 0),-1, "JOUEUR 1");
@@ -69,8 +70,29 @@ void ecran_score(BITMAP *buffer, joueur *tabJoueur){
         textprintf_ex(buffer, font, 350, 400, makecol(0, 0, 0),-1, "%d", tabJoueur[0].performance_Memory);
         textprintf_ex(buffer, font, 900, 400, makecol(0, 0, 0),-1, "%d", tabJoueur[1].performance_Memory);
 
-        textprintf_ex(buffer, font, 400, 600, makecol(0, 0, 0),-1, "Appuyez sur espace pour continuer");
+        textprintf_ex(buffer, font, 250, 600, makecol(0, 0, 0),-1, "Appuyez sur Espace pour quitter ou Tab pour les meilleurs scores de tous les temps");
         blit(buffer, screen, 0, 0, 0, 0, largeur, hauteur);
+        if(key[KEY_TAB]){
+            ///AFFICHAGE MEILLEURS SCORES
+            FILE *pointeur = NULL;
+            pointeur = fopen("meilleursScores.txt", "w+");
+            if (pointeur == NULL) { printf("Erreur d'ouverture de fichier."); }
+            clear_to_color(buffer, makecol(255, 255, 255));
+            draw_sprite(buffer, scores, 300, 15);
+            textprintf_ex(buffer, font, 10, 250, makecol(0, 0, 0), -1, "Meilleur Score a la peche aux canards :");
+            textprintf_ex(buffer, font, 10, 300, makecol(0, 0, 0), -1, "Meilleur Score au tir aux ballons :");
+            textprintf_ex(buffer, font, 10, 350, makecol(0, 0, 0), -1, "Meilleur Score au crossy road :");
+            textprintf_ex(buffer, font, 10, 400, makecol(0, 0, 0), -1, "Meilleur Score au memory :");
+
+            textprintf_ex(buffer, font, 400, 250, makecol(0, 0, 0), -1, "14 / 12 / 12");
+            textprintf_ex(buffer, font, 400, 300, makecol(0, 0, 0), -1, "0 / 0 / 0");
+            textprintf_ex(buffer, font, 400, 350, makecol(0, 0, 0), -1, "17.28 / 19.55 / 20.80");
+            textprintf_ex(buffer, font, 400, 400, makecol(0, 0, 0), -1, "0 / 0 / 0");
+
+            textprintf_ex(buffer, font, 250, 600, makecol(0, 0, 0), -1, "Appuyez sur Espace pour quitter");
+            blit(buffer, screen, 0, 0, 0, 0, largeur, hauteur);
+            while (!key[KEY_SPACE]) { rest(10); }
+        }
     }
     clear(buffer);
     for(int i=0; i<2; i++){ //Reset de la position des joueurs
@@ -139,6 +161,7 @@ int menu_map(joueur *tabJoueur) {
             tabJoueur[1].tickets=5;
 
             ///LANCEMENT DU CHOIX DU PERSO
+            clear_to_color(buffer, makecol(3, 34, 76));
             textprintf_ex(buffer, font, 540, 50, makecol(255, 255, 255), 0, "CHOIX PERSONNAGE");
             textprintf_ex(buffer, font, 355, 70, makecol(255, 255, 255), 0, "Choisissez le personnage que vous allez jouer et saisissez votre nom.");
 
@@ -271,6 +294,27 @@ int menu_map(joueur *tabJoueur) {
         ///Affichage buffer / écran
         blit(buffer, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
         clear(buffer);
+
+        ///Detection de la victoire
+        if(tabJoueur[0].tickets <= 0 || tabJoueur[1].tickets <= 0) {
+            rest(1500);
+            BITMAP *coupe = load_bitmap("CR_Coupe.bmp", NULL);
+            clear_bitmap(buffer); clear_bitmap(screen);
+            clear_to_color(screen, makecol(3, 34, 76));
+            draw_sprite(screen, coupe, 400, 100);
+            if (tabJoueur[1].tickets == 0) {
+                masked_stretch_blit(tabJoueur[0].sprite, screen, 0, 0, 35, 50, 560, 200, 70, 100);
+                textprintf_ex(screen, font, 500, 20, makecol(255, 255, 255), -1, "VICTOIRE DE %s !", tabJoueur[0].name);
+            }
+            else {
+                masked_stretch_blit(tabJoueur[1].sprite, screen, 0, 0, 35, 50, 560, 200, 70, 100);
+                textprintf_ex(screen, font, 500, 20, makecol(255, 255, 255), -1, "VICTOIRE DE %s !", tabJoueur[1].name);
+            }
+            textprintf_ex(screen, font, 550, 620, makecol(255, 255, 255),-1, "Press ESC to exit");
+
+            while (!key[KEY_ESC]) { rest(50); }
+            return 0;
+        }
     }
 
     return 0;
