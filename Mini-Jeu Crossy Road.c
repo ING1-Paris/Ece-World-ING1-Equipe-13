@@ -587,7 +587,10 @@ int finPartie(t_joueur tableauJoueur[2], BITMAP *perso[2], joueur *tabJoueurs){
         }
     }
 
-    textprintf_ex(screen, font, 520, 20, makecol(255, 255, 255),-1, "Joueur %d gagne un ticket !", joueurVictorieux);
+    if(joueurVictorieux ==3){
+        textprintf_ex(screen, font, 510, 20, makecol(255, 255, 255),-1, "Pas de ticket pour les joueurs");}
+    else{
+        textprintf_ex(screen, font, 520, 20, makecol(255, 255, 255),-1, "Joueur %d gagne un ticket !", joueurVictorieux);}
     textprintf_ex(screen, font, 550, 620, makecol(255, 255, 255),-1, "Press UP to exit");
 
     while (!key[KEY_UP]) { rest(50); }
